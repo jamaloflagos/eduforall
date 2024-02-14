@@ -26,6 +26,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 // routes
 app.use('/', require('./routes/root'));
 app.use('/api/v1/student', require('./routes/apis/student'));
+app.use('/api/v1/entrance-exam', require('./routes/apis/entranceExam'));
 
 
 

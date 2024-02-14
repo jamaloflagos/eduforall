@@ -23,6 +23,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 // routes
 app.use('/', require('./routes/root'));
 app.use('/api/v1/student', require('./routes/apis/student'));
+app.use('/api/v1/entrance-exam', require('./routes/apis/entranceExam'));
 app.use(errorHandler);
 mongoose.connection.once('open', () => {
     server.listen(PORT, () => console.log(`Connected to MongoDB and Server listening on port ${PORT}`));

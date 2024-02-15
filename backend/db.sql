@@ -1,11 +1,11 @@
-CREATE TABLE Student ( 
+CREATE TABLE NewStudent ( 
     id BIGSERIAL NOT NULL PRIMARY KEY,
     first_name VARCHAR(150) NOT NULL,
     middle_name VARCHAR(150) NOT NULL,
     last_name VARCHAR(150) NOT NULL,
     gender VARCHAR(8) NOT NULL,
     date_of_birth DATE NOT NULL,
-    class_id INT NOT NULL REFERENCES Class(id)
+    email VARCHAR(200) NOT NULL
 );
 
 CREATE TABLE Class (

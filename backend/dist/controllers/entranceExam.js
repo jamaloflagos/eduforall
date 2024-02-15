@@ -11,8 +11,9 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 const pool = require('../db/postgres');
 const asyncHandler = require('express-async-handler');
+const { getEntranceExam } = require('../db/queries');
 const entranceExam = asyncHandler((req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    yield pool.query('SELECT * FROM entrance', (err, results) => {
+    yield pool.query(getEntranceExam, (err, results) => {
         if (err)
             throw err;
         console.log(results);

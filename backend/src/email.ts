@@ -9,7 +9,7 @@ const transporter = nodemailer.createTransport({
     }
 });
 
-export interface mailOptionType {
+interface mailOptionType {
     from: string,
     to: string,
     subject: string | string[],

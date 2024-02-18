@@ -13,11 +13,19 @@ const pool = require('../db/postgres');
 const asyncHandler = require('express-async-handler');
 const { getEntranceExam } = require('../db/queries');
 const entranceExam = asyncHandler((req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    yield pool.query(getEntranceExam, (err, results) => {
-        if (err)
-            throw err;
-        console.log(results);
-        res.render('entrance-exam', { questions: results });
-    });
+    const { email } = req.params;
+    console.log(email, 'entrance exam');
+    const entranceExamQuestions = yield pool.query(getEntranceExam);
+    console.log(entranceExamQuestions.rows);
+    if (entranceExamQuestions.rows.length > 0) {
+        res.render('entrance-exam', { questions: entranceExamQuestions.rows, email });
+    }
+    else {
+        res.status(500).send('Internal server error');
+    }
+}));
+const gradeEntranceExam = asyncHandler((req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    // get the score and percentage
+    // send it with email
 }));
 module.exports = entranceExam;

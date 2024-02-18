@@ -13,7 +13,6 @@ const pool = require('../db/postgres');
 const { register, checkExistingEmail } = require('../db/queries');
 const asyncHandler = require('express-async-handler');
 const sendMail = require('../email');
-const entranceExamURL = 'http://localhost:4000/api/v1/entrance-exam';
 const registerStudent = asyncHandler((req, res) => __awaiter(void 0, void 0, void 0, function* () {
     console.log('register student recieved', __dirname);
     const { first_name, middle_name, last_name, gender, DOB, email } = req.body;
@@ -24,6 +23,7 @@ const registerStudent = asyncHandler((req, res) => __awaiter(void 0, void 0, voi
     const existingEmail = yield pool.query(checkExistingEmail, [email]);
     if (existingEmail) {
         if (existingEmail.rows.length > 0 && existingEmail.rows[0].email === email) {
+            console.log(existingEmail);
             return res.status(400).send('Email already exists');
         }
     }
@@ -32,6 +32,7 @@ const registerStudent = asyncHandler((req, res) => __awaiter(void 0, void 0, voi
     }
     const registerStudentResult = yield pool.query(register, [first_name, middle_name, last_name, gender, DOB, email]);
     if (registerStudentResult) {
+        const entranceExamURL = `http://localhost:4000/api/v1/entrance-exam/${email}`;
         const mailOptions = {
             from: 'toyinjamal@gmail.com',
             to: email,

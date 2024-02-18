@@ -8,6 +8,16 @@ CREATE TABLE NewStudent (
     email VARCHAR(200) NOT NULL
 );
 
+CREATE TABLE EntranceExam (
+    id BIGSERIAL NOT NULL PRIMARY KEY,
+    question_text VARCHAR(1000) NOT NULL,
+    option_a VARCHAR(200) NOT NULL,
+    option_b VARCHAR(200) NOT NULL,
+    option_c VARCHAR(200) NOT NULL,
+    option_d VARCHAR(200) NOT NULL,
+    correct_option CHAR NOT NULL
+);
+
 CREATE TABLE Class (
     id BIGSERIAL NOT NULL PRIMARY KEY,
     name VARCHAR(50) NOT NULL,
@@ -173,3 +183,15 @@ INSERT INTO teacher_Subjects (teacher_id, subject_id) VALUES (9, 14);
 INSERT INTO teacher_Subjects (teacher_id, subject_id) VALUES (9, 15); 
 INSERT INTO teacher_Subjects (teacher_id, subject_id) VALUES (9, 16); 
 INSERT INTO teacher_Subjects (teacher_id, subject_id) VALUES (9, 17); 
+
+
+INSERT INTO EntranceExam (question_text, option_a, option_b, option_c, option_d, correct_option) VALUES ('What is the capital of France?', 'Paris', 'London', 'Berlin', 'Rome', 'A');
+INSERT INTO EntranceExam (question_text, option_a, option_b, option_c, option_d, correct_option) VALUES ('Who wrote "Romeo and Juliet"?', 'Shakespeare', 'Dickens', 'Austen', 'Twain', 'A');
+INSERT INTO EntranceExam (question_text, option_a, option_b, option_c, option_d, correct_option) VALUES ('What is the chemical symbol for gold?', 'Au', 'Ag', 'Hg', 'Fe', 'A');
+INSERT INTO EntranceExam (question_text, option_a, option_b, option_c, option_d, correct_option) VALUES ('What is the largest planet in our solar system?', 'Jupiter', 'Mars', 'Venus', 'Saturn', 'A');
+INSERT INTO EntranceExam (question_text, option_a, option_b, option_c, option_d, correct_option) VALUES ('What is the chemical symbol for water?', 'H2O', 'CO2', 'O2', 'CH4', 'A');
+INSERT INTO EntranceExam (question_text, option_a, option_b, option_c, option_d, correct_option) VALUES ('What is the formula for the area of a rectangle?', 'length × width', 'πr^2', '½ × base × height', '½ × (base + height)', 'A');
+INSERT INTO EntranceExam (question_text, option_a, option_b, option_c, option_d, correct_option) VALUES ('What is the chemical formula for table salt?', 'NaCl', 'H2O', 'CO2', 'CH4', 'A');
+INSERT INTO EntranceExam (question_text, option_a, option_b, option_c, option_d, correct_option) VALUES ('Which city was the capital of the Roman Empire?', 'Athens', 'Rome', 'Sparta', 'Constantinople', 'B');
+INSERT INTO EntranceExam (question_text, option_a, option_b, option_c, option_d, correct_option) VALUES ('What is the smallest unit of living matter?', 'Organ', 'Tissue', 'Cell', 'Atom', 'C');
+INSERT INTO EntranceExam (question_text, option_a, option_b, option_c, option_d, correct_option) VALUES ('What is the process by which plants make their own food?', 'Respiration', 'Digestion', 'Photosynthesis', 'Excretion', 'C');

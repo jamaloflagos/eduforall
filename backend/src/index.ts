@@ -17,13 +17,13 @@ Connect_Mongo();
 // settings
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
-
-// middeware
+ 
+// middeware 
 app.use(logger);
 app.use(express.json());
 app.use(express.static(path.join(__dirname, 'public')));
 
-// routes
+// routes 
 app.use('/', require('./routes/root'));
 app.use('/api/v1/student', require('./routes/apis/student'));
 app.use('/api/v1/entrance-exam', require('./routes/apis/entranceExam'));

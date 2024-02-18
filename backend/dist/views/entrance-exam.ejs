@@ -6,6 +6,35 @@
     <title>Document</title>
 </head>
 <body>
-    <h1>Questions</h1>
+    <h1>Email: <%= email %></h1>   
+
+    <% if (questions.length > 0 ) { %>
+        <% questions.forEach(question => { %>
+            <div>
+                <p><%= question.id %>. <%= question.question_text %></p>
+                <label for="option_a">
+                    <input type="radio" name="<%= question.id %>" id="option_a" value="A">
+                    A. <%= question.option_a %>
+                </label>
+                <label for="option_b">
+                    <input type="radio" name="<%= question.id %>" id="option_b" value="B">
+                    B. <%= question.option_b %>
+                </label>
+                <label for="option_c">
+                    <input type="radio" name="<%= question.id %>" id="option_c" value="C">
+                    C. <%= question.option_c %>
+                </label>
+                <label for="option_d">
+                    <input type="radio" name="<%= question.id %>" id="option_d" value="D">
+                    D. <%= question.option_a %>
+                </label>
+        </div>
+        <% }) %>
+        <button type="submit" onclick="submitAnswers('<%= email %>')">Submit</button>
+    <% } else { %>
+        <% console.log('no') %>
+    <% } %>
+
+    <script src="/js/entranceExam.js"></script>
 </body>
 </html>

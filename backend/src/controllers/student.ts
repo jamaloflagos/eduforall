@@ -2,7 +2,6 @@ const pool = require('../db/postgres');
 const { register, checkExistingEmail } = require('../db/queries');
 const asyncHandler = require('express-async-handler'); 
 const sendMail = require('../email');
-const entranceExamURL = 'http://localhost:4000/api/v1/entrance-exam'
 
 interface mailOptionType {
     from: string,
@@ -14,7 +13,7 @@ interface mailOptionType {
 const registerStudent = asyncHandler( async (req: any, res: any) => {
     console.log('register student recieved', __dirname);
     const { first_name, middle_name, last_name, gender, DOB, email } = req.body;
-    
+
     if (!first_name || !middle_name || !last_name || !gender || !DOB || !email) {
         return res.status(400).send('All input fields required!');
     };
@@ -22,6 +21,7 @@ const registerStudent = asyncHandler( async (req: any, res: any) => {
     const existingEmail = await pool.query(checkExistingEmail, [email]);
     if (existingEmail) {
         if (existingEmail.rows.length > 0 && existingEmail.rows[0].email === email) {
+            console.log(existingEmail);
             return res.status(400).send('Email already exists');
         }
     } else {
@@ -31,6 +31,7 @@ const registerStudent = asyncHandler( async (req: any, res: any) => {
     const registerStudentResult = await pool.query(register, [first_name, middle_name, last_name, gender, DOB, email]);
     
     if (registerStudentResult) {
+        const entranceExamURL = `http://localhost:4000/api/v1/entrance-exam/${email}`;
         const mailOptions: mailOptionType = {
             from: 'toyinjamal@gmail.com',
             to: email,

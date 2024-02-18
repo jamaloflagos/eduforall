@@ -1,0 +1,9 @@
+2024-32-16	00:32:48	5a3c1f0d-f86c-46f2-ab46-51cd7f99445a	ReferenceError: C:\Users\guest 2\Desktop\development\eduLite\backend\dist\views\entrance-exam.ejs:16
+    14|                 <p><%= question.id %>. <%= question.question_text %></p>
+    15|                 <label for="option_a">
+ >> 16|                     <input type="radio" name="<% question_id %>" id="option_a" value="A">
+    17|                     A. <%= question.option_a %>
+    18|                 </label>
+    19|                 <label for="option_b">
+
+question_id is not defined	GET	/api/v1/entrance-exam/jamaloflagos@gmail.com	[object Object]

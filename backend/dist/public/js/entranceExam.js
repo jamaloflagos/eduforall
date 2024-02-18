@@ -19,6 +19,10 @@ function submitAnswers(email) {
                 console.log('question answered');
                 selectedAnswer = button.value;
                 buttonChecked = true;
+            } 
+
+            if (!button.checked) {
+                console.log('Answer all question');
             }
         });
         if (selectedAnswer !== null) {

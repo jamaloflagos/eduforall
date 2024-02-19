@@ -1,6 +1,14 @@
 const pool = require('../db/postgres');
 const asyncHandler = require('express-async-handler');
-const { getEntranceExam } = require('../db/queries');
+const sendMail = require('../email');
+const { getEntranceExam, getEntranceExamAnswers } = require('../db/queries');
+
+interface mailOptionType {
+    from: string,
+    to: string,
+    subject: string | string[],
+    text: string
+}
 
 const entranceExam = asyncHandler(async (req: any, res: any) => {
     const { email } = req.params;
@@ -16,11 +24,39 @@ const entranceExam = asyncHandler(async (req: any, res: any) => {
 });
 
 const gradeEntranceExam = asyncHandler(async (req: any, res: any) => {
-    // get the score and percentage
-    // send it with email
+    const { email, answers } = req.body;
+    if (!email || !answers) {
+        return res.sendStatus(404);
+    }
+    const entranceExamAnswers = await pool.query(getEntranceExamAnswers);
+    if (entranceExamAnswers.rows.length > 0) {
+        let score = 0;
+        for (let i = 0; i < answers.length; i++) {
+            for (let j = 0; j < entranceExamAnswers.rows.length; j++) {
+                if (answers[i].id === Number(entranceExamAnswers.rows[j].id)) {
+                    if (answers[i].selectedAnswer === entranceExamAnswers.rows[j].correct_option) {
+                        score++;
+                    };
+                }; 
+            };
+        };
+        const percentage = (score / entranceExamAnswers.rows.length) * 100;
+        console.log(percentage);
+        const mailOptions: mailOptionType = {
+            from: 'toyinjamal@gmail.com',
+            to: email,
+            subject: 'Update on your entrance exam',
+            text: ``
+        };
+        if (percentage >= 70) {
+            mailOptions.text = `Congratulations, you scored ${score}/${entranceExamAnswers.rows.length} which is ${percentage}%, the required cut off mark.`
+        } else {
+            mailOptions.text = `Sorry, you scored ${score}/${entranceExamAnswers.rows.length} which is ${percentage}%, it doesn't meet the required cut off mark.`
+        }
 
-
-
+        await sendMail(mailOptions);
+        res.send('You have successfully submitted your answers');
+    } 
 });
 
-module.exports = entranceExam
+module.exports = { entranceExam, gradeEntranceExam }

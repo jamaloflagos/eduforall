@@ -178,3 +178,4 @@
 2024-08-19	12:08:23	96d4bb0d-4908-415a-be6e-667b4b0ab4dc	GET /js/entranceExam.js undefined
 2024-09-19	12:09:01	9d81ad45-7740-4029-b3cb-224b7f4bfeb6	GET /api/v1/entrance-exam/jamaloflagos@gmail.com undefined
 2024-09-19	12:09:01	f993a1d4-c712-44a7-8aa3-99d0b8ebfe4d	GET /js/entranceExam.js undefined
+2024-43-19	12:43:48	897e4ad8-31e7-4be9-a0ac-035878894e16	POST /api/v1/entrance-exam undefined

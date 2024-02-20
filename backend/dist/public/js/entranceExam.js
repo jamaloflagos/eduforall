@@ -1,14 +1,16 @@
+const radioButtons = document.querySelectorAll('input');
 const errParagraph = document.querySelector('#err');
 const examWindow = document.querySelector('#exam-window');
 const submitWindow = document.querySelector('#submit-window');
 const submitText = document.querySelector('#submit-text ');
+const uncheckRadioBtn = document.querySelector('#clear-btn');
 async function submitAnswers(email) {
     const studentAnswers = {
         email: email,
         answers: []
     };
   try {
-    for (let i = 1; i <= 20; i++) {
+    for (let i = 1; i <= 10; i++) {
         const radioButtons = document.getElementsByName(i);
         let selectedAnswer = null;
         radioButtons.forEach(button => {
@@ -36,9 +38,14 @@ async function submitAnswers(email) {
     examWindow.style.display = 'none';
     submitWindow.style.display = 'block';
     submitText.textContent = data;
-    console.log(await res.text());
   } catch (err) {
     console.log(err.message);
     errParagraph.textContent = err.message === 'Failed to fetch' ? 'Failed to submit answer, Internal server erro' : err.message;
   }
 }
+
+// radioButtons.forEach(button => {
+//   button.addEventListener('click', () => {
+//     uncheckRadioBtn.style.display = 'block';
+//   })
+// })

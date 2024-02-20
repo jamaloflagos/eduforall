@@ -10,7 +10,7 @@
         <p>Email: <%= email %></p>   
     <% if (questions.length > 0 ) { %>
         <% questions.forEach(question => { %>
-            <div>
+        <div>
                 <p><%= question.id %>. <%= question.question_text %></p>
                 <label for="option_a">
                     <input type="radio" name="<%= question.id %>" id="option_a" value="A">
@@ -28,6 +28,7 @@
                     <input type="radio" name="<%= question.id %>" id="option_d" value="D">
                     D. <%= question.option_a %>
                 </label>
+                <!-- <button id="clear-btn" style="display: none;">Clear my choice</button> -->
         </div>
         <% }) %>
         <p id="err"></p>

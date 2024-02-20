@@ -21,3 +21,4 @@ question_id is not defined	GET	/api/v1/entrance-exam/jamaloflagos@gmail.com	[obj
 20240219	13:54:09	ee617142-5d4f-41d5-bfc9-668447439bcb	TypeError: Cannot read properties of undefined (reading 'id')	POST	/api/v1/entrance-exam	[object Object]
 20240219	13:54:53	72344bc6-847f-4ec5-8217-c38165e528b4	TypeError: Cannot read properties of undefined (reading 'id')	POST	/api/v1/entrance-exam	[object Object]
 20240219	14:10:53	16ddc635-dd99-4ad2-a51f-9f913fd2452a	TypeError: Cannot read properties of undefined (reading 'length')	POST	/api/v1/entrance-exam	[object Object]
+20240220	21:23:47	234dd595-f079-4055-a5cc-d5485f6e8636	TypeError: Cannot read properties of undefined (reading 'id')	POST	/api/v1/entrance-exam	[object Object]

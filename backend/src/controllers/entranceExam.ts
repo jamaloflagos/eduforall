@@ -53,7 +53,7 @@ const gradeEntranceExam = asyncHandler(async (req: any, res: any) => {
         }
 
         await sendMail(mailOptions);
-        res.send('You have successfully submitted your answers');
+        res.send('You have successfully submitted your answers, check your email for your score.');
     } 
 });
 

@@ -1,12 +1,12 @@
+const errParagraph = document.querySelector('#err');
+const examWindow = document.querySelector('#exam-window');
+const submitWindow = document.querySelector('#submit-window');
+const submitText = document.querySelector('#submit-text ');
 async function submitAnswers(email) {
-    // Collect answers for each question
-    // const answers = {};
-    const errParagraph = document.querySelector('#err');
     const studentAnswers = {
         email: email,
         answers: []
     };
-    // Collect answers for each question 
   try {
     for (let i = 1; i <= 20; i++) {
         const radioButtons = document.getElementsByName(i);
@@ -14,10 +14,9 @@ async function submitAnswers(email) {
         radioButtons.forEach(button => {
             if (button.checked) {
                 selectedAnswer = button.value;
-            }  
+            }    
         });
         if (selectedAnswer !== null) {
-            // answers[i] = selectedAnswer;
             const obj = {id: i, selectedAnswer: selectedAnswer};
             studentAnswers.answers.push(obj);
         } 
@@ -32,9 +31,14 @@ async function submitAnswers(email) {
       body: JSON.stringify(studentAnswers)
     });
 
+    if (!res.ok) throw new Error('Failed to submit answer, network response not ok.');
+    const data = await res.text();
+    examWindow.style.display = 'none';
+    submitWindow.style.display = 'block';
+    submitText.textContent = data;
     console.log(await res.text());
   } catch (err) {
     console.log(err.message);
-    errParagraph.textContent = err.message;
+    errParagraph.textContent = err.message === 'Failed to fetch' ? 'Failed to submit answer, Internal server erro' : err.message;
   }
 }

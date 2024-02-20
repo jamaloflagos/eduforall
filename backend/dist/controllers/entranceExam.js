@@ -58,7 +58,7 @@ const gradeEntranceExam = asyncHandler((req, res) => __awaiter(void 0, void 0, v
             mailOptions.text = `Sorry, you scored ${score}/${entranceExamAnswers.rows.length} which is ${percentage}%, it doesn't meet the required cut off mark.`;
         }
         yield sendMail(mailOptions);
-        res.send('You have successfully submitted your answers');
+        res.send('You have successfully submitted your answers, check your email for your score.');
     }
 }));
 module.exports = { entranceExam, gradeEntranceExam };

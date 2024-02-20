@@ -6,8 +6,8 @@
     <title>Document</title>
 </head>
 <body>
-    <h1>Email: <%= email %></h1>   
-
+    <div id="exam-window">
+        <p>Email: <%= email %></p>   
     <% if (questions.length > 0 ) { %>
         <% questions.forEach(question => { %>
             <div>
@@ -35,7 +35,12 @@
     <% } else { %>
         <% console.log('no') %>
     <% } %>
+    </div>
 
+    <div id="submit-window" style="display: none;">
+        <p id="submit-text"></p>
+        <a href="http://localhost:4000">Go back to home</a>
+    </div>
     <script src="/js/entranceExam.js"></script>
 </body>
 </html>

@@ -1,7 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const nodemailer = require('nodemailer');
-const logEvents = require('./middlewares/logger');
+const { logEvents } = require('./middlewares/logger');
 const transporter = nodemailer.createTransport({
     service: 'gmail',
     auth: {

@@ -1,4 +1,4 @@
-function submitAnswers(email) {
+async function submitAnswers(email) {
     // Collect answers for each question
     // const answers = {};
     const errParagraph = document.querySelector('#err');
@@ -6,7 +6,7 @@ function submitAnswers(email) {
         email: email,
         answers: []
     };
-    // Collect answers for each question
+    // Collect answers for each question 
   try {
     for (let i = 1; i <= 20; i++) {
         const radioButtons = document.getElementsByName(i);
@@ -24,29 +24,17 @@ function submitAnswers(email) {
     }
     console.log(studentAnswers, email);
     if (studentAnswers.answers.length < 10) throw new Error('Answer all question');
+    const res = await fetch('http://localhost:4000/api/v1/entrance-exam', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(studentAnswers)
+    });
+
+    console.log(await res.text());
   } catch (err) {
     console.log(err.message);
     errParagraph.textContent = err.message;
   }
-    
-    // Send answers to the server (you would customize this part)
-    // fetch('/submit-answers', {
-    //     method: 'POST',
-    //     headers: {
-    //         'Content-Type': 'application/json',
-    //     },
-    //     body: JSON.stringify(answers),
-    // })
-    // .then(response => {
-    //     if (!response.ok) {
-    //         throw new Error('Network response was not ok');
-    //     }
-    //     return response.json();
-    // })
-    // .then(data => {
-    //     console.log('Server response:', data);
-    // })
-    // .catch(error => {
-    //     console.error('There was a problem submitting the answers:', error.message);
-    // });
 }

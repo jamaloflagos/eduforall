@@ -32,13 +32,11 @@ const gradeEntranceExam = asyncHandler(async (req: any, res: any) => {
     if (entranceExamAnswers.rows.length > 0) {
         let score = 0;
         for (let i = 0; i < answers.length; i++) {
-            for (let j = 0; j < entranceExamAnswers.rows.length; j++) {
-                if (answers[i].id === Number(entranceExamAnswers.rows[j].id)) {
-                    if (answers[i].selectedAnswer === entranceExamAnswers.rows[j].correct_option) {
-                        score++;
-                    };
-                }; 
-            };
+            if (answers[i].id === Number(entranceExamAnswers.rows[i].id)) {
+                if (answers[i].selectedAnswer === entranceExamAnswers.rows[i].correct_option) {
+                    score++;
+                };
+            }; 
         };
         const percentage = (score / entranceExamAnswers.rows.length) * 100;
         console.log(percentage);

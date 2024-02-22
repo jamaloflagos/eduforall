@@ -1,10 +1,10 @@
 const express = require('express');
 const router = express.Router();
-const registerStudent = require('../../controllers/student')
+const { registerStudent, registerStudentPage } = require('../../controllers/student')
 
-router.route('/')
+router.route('/register')
     .post(registerStudent) //register a student
-    .get() // get all the students
+    .get(registerStudentPage) // get register student page
 
 router.route('/:id')
     .get() // get a single student by Id

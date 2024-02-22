@@ -1,8 +1,8 @@
 const radioButtons = document.querySelectorAll('input');
 const errParagraph = document.querySelector('#err');
 const examWindow = document.querySelector('#exam-window');
-const submitWindow = document.querySelector('#submit-window');
-const submitText = document.querySelector('#submit-text ');
+const successWindow = document.querySelector('#success-window');
+const successText = document.querySelector('#success-text ');
 const uncheckRadioBtn = document.querySelector('#clear-btn');
 async function submitAnswers(email) {
     const studentAnswers = {
@@ -23,7 +23,6 @@ async function submitAnswers(email) {
             studentAnswers.answers.push(obj);
         } 
     }
-    console.log(studentAnswers, email);
     if (studentAnswers.answers.length < 10) throw new Error('Answer all question');
     const res = await fetch('http://localhost:4000/api/v1/entrance-exam', {
       method: 'POST',
@@ -34,10 +33,13 @@ async function submitAnswers(email) {
     });
 
     if (!res.ok) throw new Error('Failed to submit answer, network response not ok.');
-    const data = await res.text();
-    examWindow.style.display = 'none';
-    submitWindow.style.display = 'block';
-    submitText.textContent = data;
+
+    if (res.ok) {
+      const message = await res.text();
+      examWindow.style.display = 'none';
+      successWindow.style.display = 'block';
+      successText.textContent = message;
+    }
   } catch (err) {
     console.log(err.message);
     errParagraph.textContent = err.message === 'Failed to fetch' ? 'Failed to submit answer, Internal server erro' : err.message;

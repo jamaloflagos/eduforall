@@ -47,4 +47,8 @@ const registerStudent = asyncHandler( async (req: any, res: any) => {
 
 });
 
-module.exports = registerStudent
+const registerStudentPage = asyncHandler(async (req: any, res: any) => {
+    res.render('register');
+})
+
+module.exports = { registerStudent, registerStudentPage }

@@ -46,4 +46,7 @@ const registerStudent = asyncHandler((req, res) => __awaiter(void 0, void 0, voi
         res.status(500).send('Registration failed');
     }
 }));
-module.exports = registerStudent;
+const registerStudentPage = asyncHandler((req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    res.render('register');
+}));
+module.exports = { registerStudent, registerStudentPage };

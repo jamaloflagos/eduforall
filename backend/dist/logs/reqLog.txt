@@ -303,3 +303,7 @@
 20240222	21:38:04	6f37cf12-2094-47e7-bf1a-89884fec10a9	GET	/api/v1/student/register	undefined
 20240222	21:38:04	f1bc901e-d033-416e-8f76-0035af84dc93	GET	/js/register.js	undefined
 20240222	21:38:26	bf649196-1d5f-4a6d-a36c-70e71c1f5e3d	POST	/api/v1/student/register	http://localhost:4000
+20240222	21:44:31	8157aa52-638b-46f2-9ca5-0bea4650114d	GET	/	undefined
+20240222	21:44:32	6adbc656-97f7-4250-a055-67d6cfb26327	GET	/css/style.css	undefined
+20240222	21:44:34	fd0e14a8-158e-4bea-bb8a-b2d79ac4b66d	GET	/api/v1/student/register	undefined
+20240222	21:44:34	1eb7bccc-b7ba-4673-89f0-1438b8262c4b	GET	/js/register.js	undefined

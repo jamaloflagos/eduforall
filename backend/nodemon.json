@@ -1,4 +1,0 @@
-{
-    "watch": ["src", "dist"],
-    "ext": ".ts,.js"
-}

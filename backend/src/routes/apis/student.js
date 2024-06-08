@@ -3,6 +3,7 @@ const router = express.Router();
 const { registerStudent, registerStudentPage } = require('../../controllers/student');
 
 router.route('/register')
+    .get() // get students
     .post(registerStudent) //register a student
     .get(registerStudentPage) // get register student page
 

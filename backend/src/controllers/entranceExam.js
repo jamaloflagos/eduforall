@@ -1,6 +1,6 @@
 const pool = require('../db/postgres');
 const asyncHandler = require('express-async-handler');
-const sendMail = require('../email');
+const sendMail = require('../../email');
 const { getEntranceExam, getEntranceExamAnswers } = require('../db/queries');
 
 

@@ -1,7 +1,7 @@
 const pool = require('../db/postgres');
 const { register, checkExistingEmail } = require('../db/queries');
 const asyncHandler = require('express-async-handler'); 
-const sendMail = require('../email');
+const sendMail = require('../../email');
 
 
 const registerStudent = asyncHandler( async (req, res) => {

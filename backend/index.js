@@ -25,9 +25,9 @@ app.use(cors());
 app.use(express.static(path.join(__dirname, 'public')));
 
 // routes 
-app.use('/', require('./routes/root'));
-app.use('/api/v1/student', require('./routes/apis/student'));
-app.use('/api/v1/entrance-exam', require('./routes/apis/entranceExam'));
+app.use('/', require('./src/routes/root'));
+app.use('/api/v1/student', require('./src/routes/apis/student'));
+app.use('/api/v1/entrance-exam', require('./src/routes/apis/entranceExam'));
 
 app.use(errorHandler);
 

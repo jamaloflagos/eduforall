@@ -3,7 +3,6 @@ const { register, checkExistingEmail } = require('../db/queries');
 const asyncHandler = require('express-async-handler'); 
 const sendMail = require('../../email');
 
-
 const registerStudent = asyncHandler( async (req, res) => {
     const { first_name, middle_name, last_name, gender, DOB, email } = req.body;
 

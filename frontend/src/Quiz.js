@@ -1,20 +1,6 @@
 import React, { useState } from 'react';
 
-const quizData = [
-  {
-    question: "What is the capital of France?",
-    options: ["Berlin", "Madrid", "Paris", "Rome"],
-    answer: 2 
-  },
-  {
-    question: "Which planet is known as the Red Planet?",
-    options: ["Earth", "Mars", "Jupiter", "Venus"],
-    answer: 1
-  },
-  // ... (Add 8 more questions with options and answers)
-];
-
-function Quiz() {
+function Quiz({quizData}) {
   const [selectedAnswers, setSelectedAnswers] = useState(new Array(quizData.length).fill(null));
   const [showResults, setShowResults] = useState(false);
 
@@ -43,9 +29,9 @@ function Quiz() {
       {quizData.map((question, index) => (
         <div key={index}>
           <h3>{question.question}</h3>
-          <ul>
+          <div>
             {question.options.map((option, i) => (
-              <li key={i}>
+              <div key={i}>
                 <label>
                   <input 
                     type="radio"
@@ -62,9 +48,9 @@ function Quiz() {
                     {i === question.answer ? ' (Correct!)' : ' (Incorrect)'}
                   </span>
                 )}
-              </li>
+              </div>
             ))}
-          </ul>
+          </div>
         </div>
       ))}
      {!showResults && (

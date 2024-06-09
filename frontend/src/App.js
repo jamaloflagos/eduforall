@@ -1,4 +1,4 @@
-import Profile from './Profile';
+import Profile from './Week1';
 
 function App() {
   return (

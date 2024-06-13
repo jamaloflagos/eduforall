@@ -1,9 +1,12 @@
 const express = require('express');
-const router = express.Router();
+const verifyJWT = require('../../middlewares/verifyJWT');
 const {
     getAllGrades,
     getGradeById 
-} = require('../../controllers/gradesController');
+    } = require('../../controllers/gradesController');
+
+const router = express.Router();
+router.use(verifyJWT);
 
 router.route('/')
     .get(getAllGrades)

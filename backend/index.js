@@ -1,7 +1,6 @@
 require('dotenv').config();
 const http = require('http');
 const Grid = require('gridfs-stream');
-const { GridFsStorage } = require('multer-gridfs-storage');
 const express = require('express');
 const path = require('path')
 const cors = require('cors');
@@ -28,40 +27,17 @@ app.use(express.urlencoded({ extended: true }));
 app.use(cors());
 app.use(express.static(path.join(__dirname, 'public')));
 
-var storage = new GridFsStorage({
-    url: process.env.MONGO_URI,
-    file: (req, file) => {
-      return new Promise((resolve, reject) => {
-        crypto.randomBytes(16, (err, buf) => {
-          if (err) {
-            return reject(err);
-          }
-          const filename = buf.toString('hex') + path.extname(file.originalname);
-          const fileInfo = {
-            filename: filename,
-            bucketName: 'uploads'
-          };
-          resolve(fileInfo);
-        });
-      });
-    }
-  });
-const upload = multer({ storage: storage });
 
-// routes 
-app.post('/api/upload', upload.single('answer'), (req, res) => {
-    res.send("Assignment uploaded successfully!")
-});
 app.use('/api/v1/student', require('./src/routes/apis/student'));
 app.use('/api/v1/entrance-exam', require('./src/routes/apis/entranceExam'));
 
+app.use('/api/v1/auth');
 app.use('/api/v1/lessons');
 app.use('/api/v1/quizzes');
 app.use('/api/v1/assignments');
 app.use('/api/v1/grades');
 app.use('/api/v1/submissions');
 app.use('/api/v1/students');
-app.use('/api/v1/auth');
 
 app.use(errorHandler);
 

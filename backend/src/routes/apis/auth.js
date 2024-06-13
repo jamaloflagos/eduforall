@@ -1,4 +1,5 @@
 const express = require('express');
+const upload = require('../../middlewares/multer-s3')
 const router = express.Router();
 const {
     register,
@@ -9,6 +10,6 @@ router.route('/login')
     .post(login)
 
 router.route('/register')
-    .post(register)
+    .post(upload.single('profile_picture'),register)
 
 module.exports = router

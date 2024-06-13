@@ -1,12 +1,15 @@
 const express = require('express');
-const router = express.Router();
+const verifyJWT = require('../../middlewares/verifyJWT');
 const {
     createAssignment,
     getAssignmentById,
     deleteAssignment,
     updateAssignment,
     submitAssignment
-} = require('../../controllers/assignmentsController');
+    } = require('../../controllers/assignmentsController');
+
+const router = express.Router();
+router.use(verifyJWT);
 
 router.route('/')
     .post(createAssignment)

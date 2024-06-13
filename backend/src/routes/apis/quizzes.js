@@ -1,12 +1,15 @@
 const express = require('express');
-const router = express.Router();
+const verifyJWT = require('../../middlewares/verifyJWT');
 const {
     createQuiz,
     getQuizById,
     deleteQuiz,
     updateQuiz,
     submitQuizAnswer
-} = require('../../controllers/quizzesController');
+    } = require('../../controllers/quizzesController');
+    
+const router = express.Router();
+router.use(verifyJWT);
 
 router.route('/')
     .post(createQuiz)

@@ -1,10 +1,13 @@
 const express = require('express');
-const router = express.Router();
+const verifyJWT = require('../../middlewares/verifyJWT');
 const {
     getAllSubmissions,
     getSubmissionById,
     postSubmissionGrade
-} = require('../../controllers/submissionsController');
+    } = require('../../controllers/submissionsController');
+
+const router = express.Router();
+router.use(verifyJWT);
 
 router.route('/')
     .get(getAllSubmissions);

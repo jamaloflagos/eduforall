@@ -1,0 +1,10 @@
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: postgres
+    environment:
+      - POSTGRES_PASSWORD=oyinkan1
+      - POSTGRES_USER=eduforall
+    restart: always
+    volumes:
+      - /backend/db-data:/var/lib/postgresql/data 

@@ -96,7 +96,7 @@ const Week1 = () => {
         const formData = new FormData();
         formData.append('answer', selectedFile);
         try {
-            const response = await fetch('http://localhost:4000/api/upload', { 
+            const response = await fetch('http://localhost/api/upload', { 
                 method: 'POST',
                 body: formData
             });

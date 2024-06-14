@@ -24,7 +24,7 @@ const getAllStudents = asyncHandler(async (req, res) => {
  * @route GET /api/students/:id
 */
 const getStudentById = asyncHandler(async (req, res) => {
-    const {student_id} = req.params
+    const student_id = req.user.id
     const student = await pool.query('SELECT * FROM users WHERE id = $1 AND role = student', [student_id]);
 
     if (!student) {

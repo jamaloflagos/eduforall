@@ -1,6 +1,6 @@
 const asyncHandler = require('express-async-handler');
-const AWS = require('aws-sdk');
 const pool = require('../db/postgres');
+const AWS = require('aws-sdk');
 
 AWS.config.update({
     accessKeyId: process.env.AWS_ACCESS_KEY_ID,
@@ -26,15 +26,15 @@ const createLesson = asyncHandler(async (req, res) => {
     let content_type = null
 
     uploadedFiles.forEach(file => {
-        const fileType = file.mimetype.split('/')[0];
+        const fileType = file.contentType.split('/')[0];
         const fileLocation = file.location; 
 
-        if (fileType === 'text' && file.mimetype.includes('html')) {
+        if (fileType === 'text' && file.contentType.includes('html')) {
             content_location = fileLocation;
-            content_type = file.mimetype
-        } else if (fileType === 'application' && file.mimetype.includes('javascript')) {
+            content_type = file.contentType
+        } else if (fileType === 'application' && file.contentType.includes('javascript')) {
             js_location = fileLocation;
-        } else if (fileType === 'text' && file.mimetype.includes('css')) {
+        } else if (fileType === 'text' && file.contentType.includes('css')) {
             css_location = fileLocation;
         }
     });

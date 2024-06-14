@@ -13,11 +13,25 @@ const s3 = new AWS.S3(); // Create S3 client
 const upload = multer({
   storage: multerS3({
     s3: s3,
-    bucket: process.env.S3_BUCKET_NAME, // Your S3 bucket name
+    bucket: process.env.S3_BUCKET_NAME,
+    acl: 'public-read',
     key: function (req, file, cb) {
-      cb(null, Date.now() + '-' + file.originalname); // Unique filename
+      let folder = '';
+      if (file.mimetype.startsWith('text/html')) {
+        folder = 'html/';
+      } else if (file.mimetype.startsWith('application/javascript')) {
+        folder = 'js/';
+      } else if (file.mimetype.startsWith('text/css')) {
+        folder = 'css/';
+      } else if (file.mimetype.startsWith('image/')) {
+        folder = 'profile_pictures/';
+      } else {
+        folder = 'submissions/';
+      }
+      cb(null, folder + Date.now() + '-' + file.originalname); // Unique filename within the folder
     }
   })
 });
+
 
 module.exports = upload

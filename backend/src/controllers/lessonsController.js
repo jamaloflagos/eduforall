@@ -18,7 +18,7 @@ const createLesson = asyncHandler(async (req, res) => {
         return res.status(400).send('No files uploaded.');
     }
     
-    const { title, week } = req.body
+    const { title, week, objectives} = req.body
     const uploadedFiles = req.files;
     let content_location = null;
     let js_location = null;
@@ -44,10 +44,14 @@ const createLesson = asyncHandler(async (req, res) => {
     }
 
     const query = `INSERT INTO lessons (title, content_type, week, content_location, js_location, css_loaction) 
-    VALUES ($1, $2, $3, $4, $5, $6)`
+    VALUES ($1, $2, $3, $4, $5, $6) RETURNING *`
     const value = [title, content_type, week, content_location, js_location, css_location]
-    const result = await pool.query(query, value);
-    res.status(200).send('Lesson uploaded succesfully')
+    const createLessonResult = await pool.query(query, value);
+    if (createLessonResult) {
+        const query = `INSERT INTO objectives VALUES (lesson_id, description) VALUES ($1, $2)`
+        const objectives = await pool.query(query, [createLessonResult.id, objectives]);
+    }
+    res.status(200).send('Lesson uploaded succesfully');
 });
 
 /** 
@@ -56,13 +60,12 @@ const createLesson = asyncHandler(async (req, res) => {
 */
 const getAllLessons = asyncHandler(async (req, res) => {
     const allLessons = await pool.query('SELECT title, id FROM lessons')
-    if (allLessons.rows.length > 0) {
-        return res.status(200).json({lessons: allLessons.rows});
-    }
 
-    if (allLessons.rows.length == 0) {
+    if (allLessons.rows.length === 0) {
         return res.status(204).send('No lessons available')
     }
+
+    res.status(200).json({lessons: allLessons.rows});
 });
 
 /** 
@@ -105,6 +108,26 @@ const getLessonById = asyncHandler(async (req, res) => {
 });
 
 /** 
+ * Get a lesson objectives by its ID
+ * @route GET /api/lessons/:id/objectives
+*/
+const getLessonObjectivesById = asyncHandler(async (req, res) => {
+    const { lesson_id } = req.params
+    const objectives = await pool.query('SELECT description FROM objectives WHERE id = $1', [lesson_id]);
+
+    if (!objectives) {
+        return res.status(500).send(`Can't get objectives`)
+    }
+
+    if (objectives.rows.description.length === 0) {
+        return res.status(404).send('No objectives for this content')
+    } 
+
+    res.status(200).json({objectives: objectives.rows})    
+});
+
+
+/** 
  * Delete a single lesson by ID
  * @route DELETE /api/lessons/:id
 */
@@ -125,5 +148,6 @@ module.exports = {
     getAllLessons,
     deleteLesson,
     updateLesson,
-    getLessonById
+    getLessonById,
+    getLessonObjectivesById
 }

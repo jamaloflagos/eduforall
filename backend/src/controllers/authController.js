@@ -35,8 +35,8 @@ const register = asyncHandler(async (req, res) => {
             console.log(existingEmail);
             return res.status(400).send('Email already exists, try another username!');
         } else {
-            const registerResult = await pool.query(query, values); 
-            if (registerResult && registerResult.rows.length > 0){
+            const createUserResult = await pool.query(query, values); 
+            if (createUserResult){
                 return res.send('You have succesfully registered!')
             } else {
                 return res.status(500).send('You are not succesfully registered, try again later');

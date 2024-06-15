@@ -19,10 +19,10 @@ const getAllGrades = asyncHandler(async (req, res) => {
     }
 
     if (grades.rows.length === 0) {
-        res.status(204).send('No grades administered')
+        res.status(204).send('No grades administered');
     }
 
-    res.status(200).json({grades})
+    res.status(200).json({grades});
 });
 
 /** 

@@ -83,7 +83,7 @@ const submitAssignment = asyncHandler(async (req, res) => {
     const student_id = req.user.id
     const { size, key, contentType, location } = req.file
     const query = `INSERT INTO submissions (student_id, assignment_id, file_name, file_type, file_size, file_location)
-    VALUES ($1, $2, $3, $4, $5, $6)`
+    VALUES ($1, $2, $3, $4, $5, $6) RETURNING student_id, assignment_id`
     const values = [student_id, assignment_id, key, contentType,size, location]
     const submitAssignmentResult = await pool.query(query, values);
 

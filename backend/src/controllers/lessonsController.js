@@ -49,9 +49,12 @@ const createLesson = asyncHandler(async (req, res) => {
     const createLessonResult = await pool.query(query, value);
     if (createLessonResult) {
         const query = `INSERT INTO objectives VALUES (lesson_id, description) VALUES ($1, $2)`
-        const objectives = await pool.query(query, [createLessonResult.id, objectives]);
+        const createObjectivesResult = await pool.query(query, [createLessonResult.id, objectives]);
+
+        if (createObjectivesResult) {
+            res.status(200).send('Lesson uploaded succesfully');
+        }
     }
-    res.status(200).send('Lesson uploaded succesfully');
 });
 
 /** 

@@ -1,5 +1,5 @@
 const express = require('express');
-const upload = require('../../middlewares/multer-s3')
+const upload = require('../../middlewares/multer-s3');
 const router = express.Router();
 const {
     register,

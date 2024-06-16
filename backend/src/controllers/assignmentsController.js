@@ -48,11 +48,11 @@ const getAssignmentById = asyncHandler(async (req, res) => {
     const { lesson_id } = req.params 
     const assignment = await pool.query('SELECT * FROM assignments WHERE lesson_id = $1', [lesson_id]);
     if (!assignment) {
-        res.status(500).send(`Can't fetch assignment for this lesson`);
+        res.status(500).json({messgae: `Can't fetch assignment for this lesson`});
     }
 
     if (assignment.rows.length === 0) {
-        res.status(404).send('No assignment for this lesson')
+        res.status(404).json({messgae: 'No assignment for this lesson'})
     }
 
     res.status(200).json({assignment: assignment.rows.description})

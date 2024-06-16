@@ -50,14 +50,14 @@ const getQuizById = asyncHandler(async (req, res) => {
     const quiz = await pool.query(`SELECT * FROM quizzes WHERE lesson_id = $1`, [lesson_id]);
 
     if (!quiz) {
-        res.status(500).send(`Can't fetch quiz`);
+        res.status(500).json({message: `Can't fetch quiz`});
     }
 
     if (quiz.rows.length === 0) {
-        res.status(400).send('No quiz for this lesson!')
+        res.status(400).json({message: 'No quiz for this lesson!'})
     }
 
-    res.status(200).json({quiz_questions: quiz.rows.questions})
+    res.status(200).json({quiz_data: quiz.rows.questions})
 });
 
 /** 

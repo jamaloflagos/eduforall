@@ -1,8 +1,56 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useAuth } from '../hooks/useAuth';
 
-function Quiz({quizData}) {
-  const [selectedAnswers, setSelectedAnswers] = useState(new Array(quizData.length).fill(null));
+function Quiz({lesson_id}) {
+  const { user, authTokens } = useAuth();
+  const [quizData, setQuizdata] = useState([]);
+  const [selectedAnswers, setSelectedAnswers] = useState([]);
   const [showResults, setShowResults] = useState(false);
+  const [message, setMessage] = useState(null);
+
+  // Fetch quiz data and check for existing results
+  useEffect(() => {
+    const fetchQuiz = async () => {
+      try {
+        const res = await fetch(`/api/v1/quizzes/${lesson_id}`, {
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${authTokens.accessToken}`
+          }
+        });
+        if (res.ok) {
+          const { quiz_data } = await res.json();
+          setQuizdata(quiz_data);
+          setMessage(null);
+
+          // Check for existing results in localStorage
+          const storedResults = JSON.parse(localStorage.getItem(`quizResults_${lesson_id}`));
+          if (storedResults && storedResults.studentId === user.id) {
+            setSelectedAnswers(storedResults.answers);
+            setShowResults(true);
+          } else {
+            setSelectedAnswers(new Array(quiz_data.length).fill(null));
+          }
+        } else {
+          const { message } = await res.json();
+          throw new Error(message);
+        }
+      } catch (error) {
+        setMessage(error.message);
+      }
+    };
+    
+    if (user) {
+      fetchQuiz();
+    }
+  }, [user, lesson_id, authTokens.accessToken]);
+  
+  // Save results on submit
+  const handleSubmit = () => {
+    setShowResults(true);
+    const results = {studentId: user.id, answers: selectedAnswers};
+    localStorage.setItem(`quizResults_${lesson_id}`, JSON.stringify(results));
+  };
 
   const handleAnswerChange = (questionIndex, selectedOption) => {
     setSelectedAnswers(prevAnswers => prevAnswers.map((answer, i) =>
@@ -10,9 +58,6 @@ function Quiz({quizData}) {
     ));
   };
 
-  const handleSubmit = () => {
-    setShowResults(true);
-  };
   const handleRetakeQuiz = () => {
     setSelectedAnswers(new Array(quizData.length).fill(null)); 
     setShowResults(false);                                   
@@ -26,7 +71,8 @@ function Quiz({quizData}) {
   return (
     <div>
       <h2>Quiz Time!</h2>
-      {quizData.map((question, index) => (
+      { quizData ? (
+      quizData.map((question, index) => (
         <div key={index}>
           <h3>{question.question}</h3>
           <div>
@@ -52,7 +98,8 @@ function Quiz({quizData}) {
             ))}
           </div>
         </div>
-      ))}
+      )) ) : <h1>{message}</h1>
+    }
      {!showResults && (
         <button onClick={handleSubmit} disabled={selectedAnswers.includes(null)}>
           Submit Answers

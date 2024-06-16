@@ -62,10 +62,10 @@ const createLesson = asyncHandler(async (req, res) => {
  * @route GET /api/lessons
 */
 const getAllLessons = asyncHandler(async (req, res) => {
-    const allLessons = await pool.query('SELECT title, id FROM lessons')
+    const allLessons = await pool.query('SELECT title, id, week FROM lessons')
 
     if (allLessons.rows.length === 0) {
-        return res.status(204).send('No lessons available')
+        return res.status(204).json({message: 'No lessons available'});
     }
 
     res.status(200).json({lessons: allLessons.rows});
@@ -80,7 +80,7 @@ const getLessonById = asyncHandler(async (req, res) => {
     const result = await pool.query('SELECT content_location, js_location, css_location FROM lessons WHERE id = $1', [lesson_id]);
 
     if (result.rows.length === 0) {
-        return res.status(404).send('Lesson not found');
+        return res.status(404).json({message: 'Lesson not found'});
     }
     const { content_location, js_location, css_location } = result.rows[0];
 

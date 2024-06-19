@@ -14,7 +14,7 @@ const LessonDetails = ({ currentLesson }) => {
   useEffect(()=> {
     const fetchLessonDetail = async () => {
       try {
-        const res = await fetch (`/api/v1/lessons/${lesson_id}`, {
+        const res = await fetch (`http://localhost:4000/api/v1/lessons/${lesson_id}`, {
           headers: {
             'Content-Type': 'application/json',
             'Authorization': `Bearer ${authTokens.accessToken}`

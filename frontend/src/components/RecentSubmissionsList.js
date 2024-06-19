@@ -1,17 +1,24 @@
 import React, { useEffect, useState } from 'react';
 import SubmissionItem from './SubmissionItem'; 
+import { useAuth } from '../hooks/useAuth';
 
 const RecentSubmissionsList = () => {
   const [submissions, setSubmissions] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
+  const { authTokens } = useAuth();
 
   useEffect(() => {
     const fetchSubmissions = async () => {
       setIsLoading(true);
 
       try {
-        const response = await fetch('/api/submissions');
+        const response = await fetch('http://localhost:4000/api/submissions', {
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${authTokens.accessToken}`
+          }
+        });
         if (!response.ok) {
           throw new Error('Network response was not ok.');
         }
@@ -26,7 +33,7 @@ const RecentSubmissionsList = () => {
     };
 
     fetchSubmissions();
-  }, []);
+  }, [authTokens.accessToken]);
 
   if (isLoading) {
     return <div>Loading...</div>;

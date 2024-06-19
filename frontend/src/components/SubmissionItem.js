@@ -2,17 +2,19 @@ import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import GradeFeedbackForm from './GradeFeedbackForm'; // Assuming you have this component
+import { useAuth } from '../hooks/useAuth';
 
 const SubmissionItem = ({ submission }) => {
   const [showGrading, setShowGrading] = useState(false);
+  const { authTokens } = useAuth();
 
   const handleGradeSubmit = async (grade, feedback) => {
     try {
-      const response = await fetch(`/api/submissions/${submission.id}/grade`, {
+      const response = await fetch(`http://localhost:4000/api/submissions/${submission.id}/grade`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          // Add authorization header if needed
+          'Authorization': `Bearer ${authTokens.accessToken}`
         },
         body: JSON.stringify({ grade, feedback })
       });

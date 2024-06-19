@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useAuth } from "../hooks/useAuth";
+import { useAuth } from "../src/hooks/useAuth";
 import LessonCard from "./LessonCard";
 const SideBar = () => {
     // ... (Fetching lesson data)
@@ -9,7 +9,7 @@ const SideBar = () => {
     useEffect(() => {
       const fetchLessons = async () => {
         try {
-          const res = await fetch('/api/v1/lessons', {
+          const res = await fetch('http://localhost:4000/api/v1/lessons', {
             headers: {
               'Content-Type': 'application/json',
               'Authorization': `Bearer ${authTokens.accessToken}`

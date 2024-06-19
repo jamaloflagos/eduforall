@@ -18,7 +18,7 @@ export const AuthProvider = ({ children }) => {
 
   const loginUser = async (username, password) => {
     const formData = {username, password}
-    const res = await fetch('/api/auth/login', {
+    const res = await fetch('http://localhost:4000/api/auth/login', {
       method: 'POST',
       body: JSON.stringify(formData),
       headers: {
@@ -38,7 +38,7 @@ export const AuthProvider = ({ children }) => {
   };
 
   const registerUser = async (formData) => { 
-    const response = await fetch('/api/auth/register', {
+    const response = await fetch('http://localhost:4000/api/auth/register', {
       method: 'POST',
       body: JSON.stringify(formData),
       headers: {
@@ -67,7 +67,7 @@ export const AuthProvider = ({ children }) => {
   const updateToken = async () => {
     // Logic to refresh the access token using the refresh token
     // ...
-    const res = await fetch('/api/auth/refresh', {
+    const res = await fetch('http://localhost:4000/api/auth/refresh', {
       method: 'POST'
     })
 

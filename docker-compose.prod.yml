@@ -1,8 +1,8 @@
 services:  
   backend:
     build: 
-      - args: 
-         - NODE_ENV=production
+      args: 
+        - NODE_ENV=production
     volumes:
       - backend-logs:/app/logs/
     command: node index.js

@@ -16,8 +16,18 @@ const StudentProgressCard = ({ studentId }) => {
     const fetchProgress = async () => {
       try {
         const [studentResponse, submissionsResponse] = await Promise.all([
-          fetch(`/api/students/${studentId}`),
-          fetch(`/api/submissions?studentId=${studentId}`),
+          fetch(`http://localhost:4000/api/students/${studentId}`, {
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': `Bearer ${authTokens.accessToken}`
+            }
+          }),
+          fetch(`http://localhost:4000/api/submissions?studentId=${studentId}`, {
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': `Bearer ${authTokens.accessToken}`
+            }
+          }),
         ]);
         
         if (!studentResponse.ok || !submissionsResponse.ok) {
@@ -32,7 +42,7 @@ const StudentProgressCard = ({ studentId }) => {
         // Calculate lessonsCompleted, totalLessons, assignmentsSubmitted, totalAssignments, averageQuizScore
         // Calculate progress based on submissions and local storage
         const lessonsCompleted = studentData.completed_lessons || [];
-        const totalLessons =  await fetch (`/api/v1/lessons/`, {
+        const totalLessons =  await fetch (`http://localhost:4000/api/v1/lessons/`, {
           headers: {
             'Content-Type': 'application/json',
             'Authorization': `Bearer ${authTokens.accessToken}`

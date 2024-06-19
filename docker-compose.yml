@@ -1,8 +1,22 @@
 services:
   backend:
     build: 
-      - context: ./backend
+      context: ./backend
+      args: 
+        - NODE_ENV=development
     container_name: backend
+    ports: 
+      - 4000:4000
+    volumes:
+      - ./backend/:/app
+      - /app/node_modules
+    network_mode: host
+    environment:
+      - PORT=4000
+      - S3_BUCKET_NAME=efa-uploads
+      - AWS_REGION=af-south-1
+      - AWS_ACCESS_KEY_ID=AKIAYS2NULJ7CGLV42PD
+      - AWS_SECRET_ACCESS_KEY=cSQbBy3vgiGwF2cnUEolihrsXhrCL70OU
     depends_on:
       - postgres-db
 
@@ -10,8 +24,12 @@ services:
     image: postgres
     container_name: postgres
     restart: always
+    environment:
+      - POSTGRES_PASSWORD=oyinkan1
+      - POSTGRES_USER=eduforall
     volumes:
       - postgres-data:/var/lib/postgresql/data 
+      - ./backend/db.sql:/docker-entrypoint-initdb.d/file.sql
 
 volumes:
- - postgres-data:
+  postgres-data:

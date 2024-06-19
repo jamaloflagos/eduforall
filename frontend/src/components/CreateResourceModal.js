@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
+import { useAuth } from '../hooks/useAuth';
 
 const CreateResourceModal = ({ resourceType, onClose, onSubmit, lesson_id }) => {
   const [title, setTitle] = useState('');
@@ -7,7 +8,8 @@ const CreateResourceModal = ({ resourceType, onClose, onSubmit, lesson_id }) => 
   const [week, setWeek] = useState(''); // For lessons
   const [due_date, setDue_date] = useState(''); // For assignments
   const [objectives, setObjectives] = useState(['']); // Start with one empty objective
-  const [selectedFiles, setSelectedFiles] = useState(null);
+  const [selectedFiles, setSelectedFiles] = useState([]);
+  const { authTokens } = useAuth();
   const [questions, setQuestions] = useState([
     { question: '', options: ['', '', '', ''], answer: null }, // Initial question
   ]);
@@ -36,10 +38,33 @@ const CreateResourceModal = ({ resourceType, onClose, onSubmit, lesson_id }) => 
     setQuestions([...questions, { question: '', options: ['', '', '', ''], answer: null }]);
   };
 
-  const handleQuestionChange = (index, field, value) => {
-    const newQuestions = [...questions];
-    newQuestions[index][field] = value;
-    setQuestions(newQuestions);
+  const handleQuestionChange = (index, field, value, optIndex) => {
+    // const newQuestions = [...questions];
+    // newQuestions[index][field] = value;
+    // setQuestions(newQuestions);
+
+    setQuestions(prevQuestions => prevQuestions.map((q, i) => {
+      if (i === index) {
+          if (field === 'options') {
+              // Use spread operator to create a new array and add the new option
+              console.log(index, field, value);
+              console.log(questions);
+              const newOptions = [...q.options];
+                if (optIndex !== undefined) { // Updating an existing option
+                    newOptions[optIndex] = value;
+                } else if (newOptions.length < 4) { // Adding a new option (only if less than 4)
+                    newOptions.push(value);
+                } 
+                return { ...q, options: newOptions }
+              // return { ...q, options: [...q.options, value] };
+          }
+          console.log(index, field, value);
+          console.log(questions);
+          return { ...q, [field]: value }; 
+          }
+          console.log(questions);
+      return q;
+  }));
   };
 
   const removeQuestion = (index) => {
@@ -69,11 +94,11 @@ const CreateResourceModal = ({ resourceType, onClose, onSubmit, lesson_id }) => 
     );
 
     try {
-      const response = await fetch(`/api/${resourceType}`, {
+      const response = await fetch(`http://localhost:4000/api/${resourceType}`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          // Add authorization header if needed
+          'Authorization': `Bearer ${authTokens.accessToken}`
         },
         body: JSON.stringify(filteredData),
       });
@@ -98,7 +123,7 @@ const CreateResourceModal = ({ resourceType, onClose, onSubmit, lesson_id }) => 
       <form onSubmit={handleSubmit}>
         {/* ... form fields for title, content, week, dueDate, etc. ... */}
         
-        {resourceType === 'lesson' && (
+        {resourceType === 'lessons' && (
           <div>
             <input type="text" value={title} onChange={(e) => setTitle(e.target.value)} />
             <input type="text" value={week} onChange={(e) => setWeek(e.target.value)} />
@@ -124,7 +149,7 @@ const CreateResourceModal = ({ resourceType, onClose, onSubmit, lesson_id }) => 
           </div>
         )}   
 
-{resourceType === 'quiz' && (
+{resourceType === 'quizzes' && (
           <div>
             <h4>Questions:</h4>
             {questions.map((question, index) => (
@@ -135,13 +160,13 @@ const CreateResourceModal = ({ resourceType, onClose, onSubmit, lesson_id }) => 
                   value={question.question}
                   onChange={(e) => handleQuestionChange(index, 'question', e.target.value)}
                 />
-                {question.options.map((option, optIndex) => (
+                {Array.isArray(question.options) && question.options.map((option, optIndex) => (
                   <div key={optIndex}>
                     <input
                       type="text"
                       placeholder={`Option ${optIndex + 1}`}
                       value={option}
-                      onChange={(e) => handleQuestionChange(index, 'options', optIndex, e.target.value)}
+                      onChange={(e) => handleQuestionChange(index, 'options', e.target.value, optIndex)}
                     />
                   </div>
                 ))}
@@ -151,7 +176,7 @@ const CreateResourceModal = ({ resourceType, onClose, onSubmit, lesson_id }) => 
                 >
                   <option value="">Select Correct Answer</option>
                   {question.options.map((_, optIndex) => (
-                    <option key={optIndex} value={optIndex}>{optIndex + 1}</option>
+                    <option key={optIndex} value={optIndex}>{optIndex}</option>
                   ))}
                 </select>
                 <button type="button" onClick={() => removeQuestion(index)}>-</button>
@@ -161,7 +186,7 @@ const CreateResourceModal = ({ resourceType, onClose, onSubmit, lesson_id }) => 
           </div>
         )}
 
-        { resourceType === 'assignmnets' && (
+        { resourceType === 'assignments' && (
             <div>
                 <h4>Assignment</h4>
                 <input type="text" value={description} onChange={(e) => setDescription(e.target.value)} />

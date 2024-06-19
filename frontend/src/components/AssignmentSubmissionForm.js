@@ -22,7 +22,7 @@ const AssignmentSubmissionForm = ({ assignment_id }) => {
       const formData = new FormData();
       formData.append('answer', selectedFile);
       try {
-          const res = await fetch(`/api/v1/assignments/${assignment_id}/submit`, { 
+          const res = await fetch(`http://localhost:4000/api/v1/assignments/${assignment_id}/submit`, { 
               method: 'POST',
               body: formData,
               headers: {
@@ -44,7 +44,7 @@ const AssignmentSubmissionForm = ({ assignment_id }) => {
     // Fetch submission status from API endpoint (see backend implementation below)
     const fetchSubmissionStatus = async () => {
       try {
-        const res = await fetch(`/api/v1/assignments/${assignment_id}/submission-status`,{ 
+        const res = await fetch(`http://localhost:4000/api/v1/assignments/${assignment_id}/submission-status`,{ 
           headers: {
             'Authorization': `Bearer ${authTokens.accessToken}`
           }

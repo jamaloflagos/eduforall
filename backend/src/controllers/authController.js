@@ -14,6 +14,7 @@ const generateJWT = (payload) => {
  * @route POST /api/auth/register
 */ 
 const register = asyncHandler(async (req, res) => {
+    console.log('create user request');
     let profile_picture_location = null
     const { 
         email, password, role, firstname, lastname, middlename, location

@@ -20,6 +20,6 @@ router.route('/:id')
     .delete(deleteQuiz)
 
 router.route('/:id/submit')
-    post(submitQuizAnswer)
+    .post(submitQuizAnswer)
 
 module.exports = router

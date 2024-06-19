@@ -52,7 +52,7 @@ const createLesson = asyncHandler(async (req, res) => {
         const createObjectivesResult = await pool.query(query, [createLessonResult.id, objectives]);
 
         if (createObjectivesResult) {
-            res.status(200).json({message: 'Lesson uploaded succesfully'});
+            res.status(200).json({message: 'Lesson uploaded succesfully', lesson_id: createLessonResult.rows.id});
         }
     }
 });

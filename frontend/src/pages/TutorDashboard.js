@@ -8,7 +8,7 @@ const TutorDashboard = () => {
   const [showModal, setShowModal] = useState(false);
   const [modalType, setModalType] = useState('');
   const [createdResource, setCreatedResource] = useState(null);
-  let lesson_id = null || createdResource.id || createdResource.lesson_id
+  const [lesson_id, setLesson_id] = useState(null);
 
   const onClose = () => {
     setShowModal(false);
@@ -19,6 +19,7 @@ const TutorDashboard = () => {
     // Handle the newly created resource data here
     console.log('New resource created:', newResource); 
     setCreatedResource(newResource);
+    setLesson_id(createdResource.lesson_id);
     // You might want to update the relevant section of the dashboard with this new resource
   };
   return (

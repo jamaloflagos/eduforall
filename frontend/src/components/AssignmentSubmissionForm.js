@@ -1,51 +1,84 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
-import axios from 'axios'; // Or your preferred HTTP library
+import { useAuth } from '../hooks/useAuth';
 
-const AssignmentSubmissionForm = ({ assignmentId, onSubmitSuccess }) => {
+const AssignmentSubmissionForm = ({ assignment_id }) => {
   const [selectedFile, setSelectedFile] = useState(null);
-  const [uploadProgress, setUploadProgress] = useState(0);
-  const [error, setError] = useState(null);
+  const [message, setMessage] = useState(null);
+  const [hasSubmitted, setHasSubmitted] = useState(false);
+  const {authTokens} = useAuth();
 
-  const handleFileChange = (event) => {
-    setSelectedFile(event.target.files[0]);
+    const handleFileChange = (event) => {
+        setSelectedFile(event.target.files[0]); 
+    };
+
+    const handleUpload = async (e) => {
+      e.preventDefault()
+      if (!selectedFile) {
+          setMessage("Please select a file.");
+          return;
+      }
+
+      const formData = new FormData();
+      formData.append('answer', selectedFile);
+      try {
+          const res = await fetch(`/api/v1/assignments/${assignment_id}/submit`, { 
+              method: 'POST',
+              body: formData,
+              headers: {
+                'Authorization': `Bearer ${authTokens.accessToken}`
+              }
+          });
+
+          if (res.ok) {
+            const data = await res.text();
+            setMessage(data); 
+            setSelectedFile(null);
+          }
+      } catch (error) {
+          console.error('Error uploading file:', error);
+      }
   };
-
-  const handleSubmit = async (event) => {
-    event.preventDefault();
-    setError(null); // Clear previous errors
-
-    const formData = new FormData();
-    formData.append('code', selectedFile);
-
-    try {
-      const response = await axios.post(`/api/assignments/${assignmentId}/submit`, formData, {
-        headers: {
-          'Content-Type': 'multipart/form-data' // Important for file uploads
-        },
-        onUploadProgress: (progressEvent) => {
-          const progress = Math.round((progressEvent.loaded * 100) / progressEvent.total);
-          setUploadProgress(progress);
+  
+  useEffect(() => {
+    // Fetch submission status from API endpoint (see backend implementation below)
+    const fetchSubmissionStatus = async () => {
+      try {
+        const res = await fetch(`/api/v1/assignments/${assignment_id}/submission-status`,{ 
+          headers: {
+            'Authorization': `Bearer ${authTokens.accessToken}`
+          }
+        });
+        if (res.ok) {
+          const { hasSubmitted } = await res.json();
+          setHasSubmitted(hasSubmitted);
         }
-      });
-      onSubmitSuccess(response.data); // Call the callback on success
-    } catch (err) {
-      setError(err.message);
+        const {message} = await res.json();
+        throw new Error(message);
+      } catch (error) {
+        setMessage(error.message);
+      }
     }
-  };
 
+    if (assignment_id) {
+      fetchSubmissionStatus();
+    }
+  }, [assignment_id, authTokens.accessToken]);
   return (
-    <form onSubmit={handleSubmit}>
-      <div>
-        <input type="file" onChange={handleFileChange} />
-        {selectedFile && <p>Selected file: {selectedFile.name}</p>}
-        {uploadProgress > 0 && <progress value={uploadProgress} max="100" />}
-      </div>
 
-      {error && <div className="error">{error}</div>}
-
-      <button type="submit" disabled={!selectedFile || uploadProgress < 100}>Submit</button>
+  <div>
+  {hasSubmitted ? (
+    <p>You have already submitted an answer for this assignment. Await your grade!</p>
+  ) : (
+    <form encType="multipart/form-data" onSubmit={handleUpload}>
+      <label htmlFor="answer">Submit your answer:</label> <br />
+      <input type="file" name="answer" id="answer" onChange={handleFileChange}/>
+      <button type="submit">Submit Answer</button>
+      {message && <h1>{message}</h1>}
     </form>
+  )}
+  {message && <h1>{message}</h1>}
+</div>
   );
 };
 

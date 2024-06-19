@@ -43,6 +43,7 @@ const AssignmentCard = ({ lesson_id }) => {
 
   return (
     <div>
+      <h4>Assignment</h4>
       {
       message ? <h1>{message}</h1> : 
       ( 
@@ -55,7 +56,7 @@ const AssignmentCard = ({ lesson_id }) => {
             {/* Status: {assignmentStatus} */}
           </p>
           {/* Optionally display additional assignment details (e.g., description excerpt) */}
-          <AssignmentSubmissionForm />
+          <AssignmentSubmissionForm assignment_id={assignment.id}/>
           <GradeFeedback />
         </div> 
       )

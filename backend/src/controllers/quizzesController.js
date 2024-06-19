@@ -38,7 +38,7 @@ const createQuiz = asyncHandler(async (req, res) => {
         res.status(500).send(`Can't create quiz`);
     }
 
-    res.status(200).send('Quiz created successfully')
+    res.status(200).json({message: 'Quiz created succesfully', lesson_id})
 });
 
 /** 

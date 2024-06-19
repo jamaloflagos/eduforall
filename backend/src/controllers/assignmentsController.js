@@ -18,7 +18,7 @@ const createAssignment = asyncHandler(async (req, res) => {
         res.status(500).send('Assignment not created succesfully');
     }
 
-    res.status(200).send('Assignment created succesfully');
+    res.status(200).json({message: 'Assignment created succesfully', lesson_id});
 
 });
 
@@ -94,11 +94,31 @@ const submitAssignment = asyncHandler(async (req, res) => {
     res.status(200).send('Assignment submitted successfully')
 });
 
+const checkAssignmentSubmitted = asyncHandler(async (req, res) => {
+    const { assignment_id } = req.params;
+    const user_id = req.user.id; // Assuming you have authentication middleware
+      
+          // Check if the user has submitted for this assignment
+    const result = await pool.query(
+        'SELECT EXISTS(SELECT 1 FROM submissions WHERE assignment_id = $1 AND student_id = $2)',
+        [assignment_id, user_id]
+    );
+    const hasSubmitted = result.rows[0].exists; // true or false
+    
+    if (hasSubmitted) {
+        return res.json({ hasSubmitted });
+    }
+      
+    res.status(500).json({ message: 'Internal server error' });
+      
+});
+
 module.exports = {
     createAssignment,
     getAssignmentById,
     getAllAssignments,
     deleteAssignment,
     updateAssignment,
-    submitAssignment
+    submitAssignment,
+    checkAssignmentSubmitted
 }

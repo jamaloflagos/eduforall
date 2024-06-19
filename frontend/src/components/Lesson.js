@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useAuth } from "../hooks/useAuth";
-import LessonCard from "../components/LessonCard";
-const LessonListPage = () => {
+import LessonCard from "./LessonCard";
+const SideBar = () => {
     // ... (Fetching lesson data)
     const { authTokens, user } = useAuth()
     const [lessons, setLessons] = useState();
@@ -42,6 +42,7 @@ const LessonListPage = () => {
     
     return (
       <div className="lesson-list">
+        <h1>Lessons</h1>
         {lessons ? (
           lessons.map((lesson) => (
           <LessonCard key={lesson.id} lesson={lesson} />
@@ -51,4 +52,4 @@ const LessonListPage = () => {
     );
   };
   
-export default LessonListPage;
+export default SideBar;

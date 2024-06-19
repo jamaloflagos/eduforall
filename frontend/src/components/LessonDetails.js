@@ -1,23 +1,20 @@
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
-import LessonContent from "../components/LessonContent";
-// import QuizForm from "../components/QuizForm";
-// import QuizResults from "../components/QuizResults";
-import ObjectivesCard from "../components/ObjectivesCard";
-import AssignmentCard from "../components/AssignmentCard";
-import Quiz from "../components/Quiz";
+import LessonContent from "./LessonContent";
+import ObjectivesCard from "./ObjectivesCard";
+import AssignmentCard from "./AssignmentCard";
+import Quiz from "./Quiz";
 import { useAuth } from "../hooks/useAuth";
 
-const LessonDetailPage = ({ lesson }) => {
+const LessonDetails = ({ currentLesson }) => {
   const { authTokens, user } = useAuth();
-  const { id } = useParams();
+  const { lesson_id } = currentLesson;
   const [lessonContent, setLessonContent] = useState();
   const [message, setMessage] = useState();
-    // ... (fetch lesson and quiz data)
+  
   useEffect(()=> {
     const fetchLessonDetail = async () => {
       try {
-        const res = await fetch (`/api/v1/lessons/${id}`, {
+        const res = await fetch (`/api/v1/lessons/${lesson_id}`, {
           headers: {
             'Content-Type': 'application/json',
             'Authorization': `Bearer ${authTokens.accessToken}`
@@ -47,21 +44,21 @@ const LessonDetailPage = ({ lesson }) => {
     if (user) {
       fetchLessonDetail()
     }
-  }, [user, authTokens.accessToken,id])
+  }, [user, authTokens.accessToken, lesson_id])
   
   return (
       <div>
-        <ObjectivesCard lesson_id={id}/>
+        <ObjectivesCard lesson_id={lesson_id}/>
         {message ? <h1>{message}</h1> : <LessonContent content={lessonContent} />}
         {/* {!quizCompleted ? (
           <QuizForm quiz={lesson.quiz} onSubmit={handleQuizSubmit} />
         ) : (
           <QuizResults quizResults={quizResults} />
         )} */}
-        <Quiz lesson_id={id}/>
-        <AssignmentCard  lesson_id={id} />
+        <Quiz lesson_id={lesson_id}/>
+        <AssignmentCard  lesson_id={lesson_id} />
       </div>
     );
   };
   
-  export default LessonDetailPage;
+  export default LessonDetails;

@@ -107,7 +107,7 @@ const RegisterPage = () => {
           required 
         />
       </div>
-      <button type="submit">Login</button>
+      <button type="submit">Register</button>
     </form>
   );
 };

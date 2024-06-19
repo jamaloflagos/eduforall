@@ -1,8 +1,7 @@
 import React, { useState } from 'react';
-import StudentProgressOverview from './StudentProgressOverview';
-import RecentSubmissionsList from './RecentSubmissionsList';
-import UpcomingDeadlines from './UpcomingDeadlines';
-import CreateResourceModal from './CreateResourceModal'; // Reusable component
+import StudentProgressOverview from '../components/StudentProgressOverview';
+import RecentSubmissionsList from '../components/RecentSubmissionsList';
+import CreateResourceModal from '../components/CreateResourceModal'; // Reusable component
 
 const TutorDashboard = () => {
   // ... (useState for any shared modal state)
@@ -26,7 +25,6 @@ const TutorDashboard = () => {
     <div className="tutor-dashboard">
       <StudentProgressOverview />
       <RecentSubmissionsList />
-      <UpcomingDeadlines />
 
       {/* Buttons to trigger modals */}
       <button onClick={() => setShowModal(true) & setModalType('lessons')}>Create Lesson</button>

@@ -49,7 +49,7 @@ function Dashboard() {
         if (user) {
             fetchLessons();
         }
-      }, [user, authTokens.accessToken, navigate])
+      }, [user, authTokens.accessToken, navigate, dispatch])
 
 
     const handleLessonSelect = (lessonId) => {

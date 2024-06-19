@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import './GradeFeedback.css'; // Your custom CSS for styling
+// import './GradeFeedback.css'; // Your custom CSS for styling
 
 const GradeFeedback = ({ grade, feedback }) => {
   // Determine status (e.g., 'Pending', 'Graded') based on grade availability

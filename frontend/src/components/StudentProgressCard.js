@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { CircularProgressbar } from 'react-circular-progressbar';
-import 'react-circular-progressbar/dist/styles.css';
-import './StudentProgressCard.css'; 
+import 'react-circular-progressbar/dist/styles.css'; 
+// import './StudentProgressCard.css'; 
 import { useAuth } from '../hooks/useAuth';
 
 const StudentProgressCard = ({ studentId }) => {
@@ -10,7 +10,7 @@ const StudentProgressCard = ({ studentId }) => {
   const [studentData, setStudentData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const { authTokens, user } = useAuth();
+  const { authTokens } = useAuth();
 
   useEffect(() => {
     const fetchProgress = async () => {

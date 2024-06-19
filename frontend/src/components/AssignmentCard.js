@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
-import './AssignmentCard.css'; 
+// import './AssignmentCard.css'; 
 import AssignmentSubmissionForm from './AssignmentSubmissionForm';
 import GradeFeedback from './GradeFeedback';
 import { useAuth } from '../hooks/useAuth';
@@ -75,15 +75,15 @@ AssignmentCard.propTypes = {
 };
 
 // Helper function to determine assignment status (implementation depends on your data model)
-function getAssignmentStatus(assignment) {
-  const now = new Date();
-  if (assignment.submissions && assignment.submissions.length > 0) {
-    return 'Submitted';
-  } else if (now > new Date(assignment.dueDate)) {
-    return 'Overdue';
-  } else {
-    return 'Not submitted';
-  }
-}
+// function getAssignmentStatus(assignment) {
+//   const now = new Date();
+//   if (assignment.submissions && assignment.submissions.length > 0) {
+//     return 'Submitted';
+//   } else if (now > new Date(assignment.dueDate)) {
+//     return 'Overdue';
+//   } else {
+//     return 'Not submitted';
+//   }
+// }
 
 export default AssignmentCard;

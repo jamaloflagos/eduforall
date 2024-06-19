@@ -1,5 +1,5 @@
 import React, { createContext, useState, useEffect } from 'react';
-import jwt_decode from 'jwt-decode'; // For decoding JWT tokens
+import { jwtDecode } from 'jwt-decode'; // For decoding JWT tokens
 
 const AuthContext = createContext();
 
@@ -9,7 +9,7 @@ export const AuthProvider = ({ children }) => {
   );
   const [user, setUser] = useState(() => {
     if (authTokens) {
-      return jwt_decode(authTokens.accessToken);
+      return jwtDecode(authTokens.accessToken);
     } else {
       return null;
     }
@@ -33,7 +33,7 @@ export const AuthProvider = ({ children }) => {
 
     const data = await res.json()
     setAuthTokens(data);
-    setUser(jwt_decode(data.accessToken));
+    setUser(jwtDecode(data.accessToken));
     localStorage.setItem('authTokens', JSON.stringify(data));
   };
 
@@ -78,13 +78,13 @@ export const AuthProvider = ({ children }) => {
 
     const { token: accessToken } = await res.json()
     setAuthTokens(accessToken);
-    setUser(jwt_decode(accessToken));
+    setUser(jwtDecode(accessToken));
     localStorage.setItem('authTokens', JSON.stringify(accessToken));
   };
 
   useEffect(() => {
     if (authTokens) {
-      setUser(jwt_decode(authTokens.accessToken)); 
+      setUser(jwtDecode(authTokens.accessToken)); 
     }
     setLoading(false); 
   }, [authTokens, loading]); 

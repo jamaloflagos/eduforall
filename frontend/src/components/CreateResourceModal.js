@@ -6,7 +6,6 @@ const CreateResourceModal = ({ resourceType, onClose, onSubmit, lesson_id }) => 
   const [description, setDescription] = useState(''); // For lessons and quizzes
   const [week, setWeek] = useState(''); // For lessons
   const [due_date, setDue_date] = useState(''); // For assignments
-  const [lessonId, setLessonId] = useState(''); // For quizzes and assignments
   const [objectives, setObjectives] = useState(['']); // Start with one empty objective
   const [selectedFiles, setSelectedFiles] = useState(null);
   const [questions, setQuestions] = useState([
@@ -166,7 +165,7 @@ const CreateResourceModal = ({ resourceType, onClose, onSubmit, lesson_id }) => 
             <div>
                 <h4>Assignment</h4>
                 <input type="text" value={description} onChange={(e) => setDescription(e.target.value)} />
-                <input type="date" value={due_date} onChange={(e) => setDescription(e.target.value)} />
+                <input type="date" value={due_date} onChange={(e) => setDue_date(e.target.value)} />
             </div>
         )}
         <button type="submit">Create</button>

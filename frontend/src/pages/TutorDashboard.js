@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import StudentProgressOverview from './StudentProgressOverview';
 import RecentSubmissionsList from './RecentSubmissionsList';
 import UpcomingDeadlines from './UpcomingDeadlines';

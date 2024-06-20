@@ -5,6 +5,7 @@ const verifyRoles = require('../../middlewares/verifyRoles');
 const upload = require('../../middlewares/multer-s3');
 const {
     createAssignment,
+    getAllAssignments,
     getAssignmentById,
     deleteAssignment,
     updateAssignment,
@@ -15,14 +16,15 @@ const router = express.Router();
 router.use(verifyJWT);
 
 router.route('/')
-    .post(verifyRoles(ROLES_LIST.Tutor),createAssignment)
+    .post(createAssignment)
+    .get(getAllAssignments)
 
 router.route('/:id')
-    .get(verifyRoles(ROLES_LIST.Tutor, ROLES_LIST.Student),getAssignmentById)
-    .put(verifyRoles(ROLES_LIST.Tutor),updateAssignment)
-    .delete(verifyRoles(ROLES_LIST.Tutor),deleteAssignment)
+    .get(getAssignmentById)
+    .put(updateAssignment)
+    .delete(deleteAssignment)
 
 router.route('/:id/submit')
-    .post(verifyRoles(ROLES_LIST.Student),upload.single('assignment_answer'), submitAssignment)
+    .post(upload.single('assignment_answer'), submitAssignment)
 
 module.exports = router

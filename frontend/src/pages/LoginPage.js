@@ -2,15 +2,15 @@ import React, { useState } from 'react';
 import { useAuth } from '../hooks/useAuth';
 
 const LoginPage = () => {
-  const [username, setUsername] = useState('');
+  const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
-  const { login } =  useAuth();// Use the login function from context
-
+  const { loginUser, message } =  useAuth();// Use the login function from context
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await login(username, password);
+      console.log(email, password)
+      await loginUser(email, password);
     } catch (err) {
       setError(err.message);
     }
@@ -19,15 +19,15 @@ const LoginPage = () => {
   return (
     <form onSubmit={handleSubmit}>
       <h2>Login</h2>
-      {error && <div className="error">{error}</div>}
+      {message && <div className="message">{message}</div>}
       <div>
-        <label htmlFor="username">Username:</label>
+        <label htmlFor="email">Email:</label>
         <input 
           type="text" 
-          id="username" 
-          value={username} 
-          onChange={(e) => setUsername(e.target.value)} 
-          required 
+          id="email" 
+          value={email} 
+          onChange={(e) => setEmail(e.target.value)} 
+          // required 
         />
       </div>
       <div>
@@ -37,7 +37,7 @@ const LoginPage = () => {
           id="password" 
           value={password} 
           onChange={(e) => setPassword(e.target.value)} 
-          required 
+          // required 
         />
       </div>
       <button type="submit">Login</button>

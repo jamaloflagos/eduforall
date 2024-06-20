@@ -17,6 +17,7 @@ CREATE TABLE users (
 );
 
 -- Lessons table
+CREATE SEQUENCE lesson_week_incrementing_number_seq;
 CREATE TABLE lessons (
     id SERIAL PRIMARY KEY,
     title VARCHAR(255) NOT NULL,
@@ -28,7 +29,6 @@ CREATE TABLE lessons (
     published_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
-CREATE SEQUENCE lesson_week_incrementing_number_seq;
 
 CREATE TABLE objectives (
     id SERIAL PRIMARY KEY,

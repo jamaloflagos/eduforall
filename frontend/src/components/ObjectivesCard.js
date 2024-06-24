@@ -8,7 +8,7 @@ const ObjectivesCard = ({lesson_id}) => {
     useEffect(() => {
         const fetchObjectives = async () => {
           try {
-            const res = await fetch(`http://localhost:4000/api/v1/lessons/${lesson_id}/objectives`, {
+            const res = await fetch(`https://eduforall-backend.vercel.app/api/v1/lessons/${lesson_id}/objectives`, {
               headers: {
                 'Content-Type': 'application/json',
                 'Authorization': `Bearer ${authTokens.accessToken}`

@@ -20430,3 +20430,15 @@
 2024-06-24	21:27:08	be24fdb8-13b9-4974-bcf6-b53c452d7983	GET	/api/v1/quizzes/3	http://localhost:3000
 2024-06-24	21:27:08	2a9ae543-b21c-499d-b3ff-8418555221ac	GET	/api/v1/lessons/3	http://localhost:3000
 2024-06-24	21:27:08	6cba6a03-8c93-4318-b835-730b732d61f3	GET	/api/v1/assignments/3	http://localhost:3000
+2024-06-24	21:45:27	ad0381a8-f58d-45b5-933f-663186015dc4	OPTIONS	/api/v1/lessons	http://localhost:3000
+2024-06-24	21:45:27	3926811e-e0a2-4ee6-945a-774c109b768e	GET	/api/v1/lessons	http://localhost:3000
+2024-06-24	21:45:31	7a41d407-e41d-4621-9b17-04951fdfdb6a	OPTIONS	/api/v1/lessons/1/objectives	http://localhost:3000
+2024-06-24	21:45:31	dc766eac-9c84-4f1d-b238-c9913c28cd3a	GET	/api/v1/lessons/1/objectives	http://localhost:3000
+2024-06-24	21:45:31	8f24cd9b-504a-437c-9a3a-fe812dfd9b9c	OPTIONS	/api/v1/quizzes/1	http://localhost:3000
+2024-06-24	21:45:31	cd9f351d-135e-4f8e-8371-c6918392b5fa	GET	/api/v1/quizzes/1	http://localhost:3000
+2024-06-24	21:45:31	6089b4b6-065e-4bca-a9aa-b56407fa5d7c	OPTIONS	/api/v1/assignments/1	http://localhost:3000
+2024-06-24	21:45:31	f7169e02-3575-4309-971c-ac5c873fa9a7	GET	/api/v1/assignments/1	http://localhost:3000
+2024-06-24	21:45:31	a49bb867-ad1e-4425-a174-82622651d3f4	OPTIONS	/api/v1/lessons/1	http://localhost:3000
+2024-06-24	21:45:31	7dfa2aae-df83-4b0a-adbf-ded65e96fd3e	GET	/api/v1/lessons/1	http://localhost:3000
+2024-06-24	21:45:32	9ffe1f15-54ec-4c7d-8133-06aaf31a4d79	OPTIONS	/api/v1/assignments/1/submission-status	http://localhost:3000
+2024-06-24	21:45:32	6dd17172-e91b-4e4b-ad93-ea53f14e0c16	GET	/api/v1/assignments/1/submission-status	http://localhost:3000

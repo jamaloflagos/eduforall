@@ -108,7 +108,7 @@ const CreateResourceModal = ({ resourceType, onClose, onSubmit, lesson_id}) => {
       console.log(data.description, data.lesson_id, data.due_date);
       console.log(formData.title)
       console.log(title, objectives, selectedFile)
-      const res = await fetch(`http://localhost:4000/api/v1/${resourceType}`, {
+      const res = await fetch(`https://eduforall-backend.vercel.app/api/v1/${resourceType}`, {
         method: 'POST',
         headers: resourceType === 'lessons' ? {'Role': 'tutor'} : {'Role': 'tutor',
           'Content-Type': 'application/json'

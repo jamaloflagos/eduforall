@@ -12,7 +12,7 @@ function Quiz({lesson_id}) {
   useEffect(() => {
     const fetchQuiz = async () => {
       try {
-        const res = await fetch(`https://eduforall-backend.vercel.app/api/v1/quizzes/${lesson_id}`, {
+        const res = await fetch(`http://localhost:4000/api/v1/quizzes/${lesson_id}`, {
           headers: {
             'Content-Type': 'application/json',
             'Authorization': `Bearer ${authTokens.accessToken}`

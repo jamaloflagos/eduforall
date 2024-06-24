@@ -1,7 +1,7 @@
 const asyncHandler = require('express-async-handler');
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
-const validator = require('email-validator');
+const validator = require('validator');
 const pool = require('../db/postgres');
 
 // const generateJWT = (payload) => {
@@ -22,11 +22,19 @@ const register = asyncHandler(async (req, res) => {
     } = req.body
 
     if(req.file) {
-        profile_picture_location = req.file.location
+        profile_picture_location = req.file.key
     }
 
     if (!firstname || !lastname || !email || !password || !role) {
         return res.status(400).json({message: 'All input fields required!'});
+    }
+
+    if (!validator.isEmail(email)) {
+        return res.status(400).json({message: 'Enter a valid email'});
+    }
+
+    if (!validator.isStrongPassword(password)) {
+        return res.status(400).json({message: 'Enter a strong pass'});
     }
 
     const existingEmail = await pool.query('SELECT email from users WHERE email = $1', [email]);
@@ -70,18 +78,15 @@ const login = asyncHandler(async (req, res) => {
     if (!email || !password) {
         return res.status(400).json({error: 'Enter all credentials'})
     }
-    if(!validator.validate(email)) {
+    if(!validator.isEmail(email)) {
         return res.status(400).json({error: 'Enter a valid email'})
     } 
 
     const userExists = await pool.query('SELECT email, password, id, role, firstname FROM users WHERE email = $1', [email]);
     
     if (userExists && userExists.rows.length > 0) {
-        console.log('user existed', password);
-        console.log(userExists.rows);
         const user = userExists.rows[0];
         const passwordMatch = await bcrypt.compare(password, user.password);
-        console.log('user exist again');
 
         if (!passwordMatch) {
             return res.status(401).json({message: 'Incorrect password!'});
@@ -93,14 +98,8 @@ const login = asyncHandler(async (req, res) => {
             user_name: user.firstname
          }
 
-        jwt.sign(payload, process.env.SECRET, {expiresIn: '15m'}, (err, token) => {
-            if (err) return res.status(500).json({message: 'Login failed in generagting access token'});
-                
-            jwt.sign(payload, process.env.SECRET, {expiresIn: '60m'}, (err, token) => {
-                if (err) return res.status(500).json({message: 'Login failed in generagting refresh token'});
-                res.cookie("jwt", token, { httpOnly: true, secure: true, maxAge: 24 * 60 * 60 * 1000 });
-            });
-
+        jwt.sign(payload, process.env.ACCESS_TOKEN_SECRET,  (err, token) => {
+            if (err) return res.status(500).json({message: 'Login failed'});
             res.status(200).json({accessToken: token});
         });
     } else {
@@ -112,8 +111,7 @@ const login = asyncHandler(async (req, res) => {
 
 const refreshToken = async(req, res) => {
     const cookies = req.cookies;
-    console.log(cookies);
-    
+    console.log('refesh: ', cookies);
 
     if (!cookies && !cookies.jwt) return res.sendStatus(401);
 
@@ -125,7 +123,7 @@ const refreshToken = async(req, res) => {
         (err, decoded) => {
             if(err) return res.sendStatus(403)
 
-            const foundUser = pool.query('SELECT * FROM users WHERE id = $1', [decoded.id])
+            const foundUser = pool.query('SELECT id FROM users WHERE id = $1', [decoded.id])
 
             if(!foundUser) return refreshToken.sendStatus(401);
 

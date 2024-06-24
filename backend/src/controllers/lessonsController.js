@@ -1,58 +1,32 @@
 const asyncHandler = require('express-async-handler');
 const pool = require('../db/postgres');
-const AWS = require('aws-sdk');
+const { S3Client, GetObjectCommand } = require('@aws-sdk/client-s3');
 
-AWS.config.update({
-    accessKeyId: process.env.AWS_ACCESS_KEY_ID,
-    secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
-    region: process.env.AWS_REGION,
-});
-
-const s3 = new AWS.S3();
+const s3Client = new S3Client({ region: process.env.AWS_REGION });
 /** 
  * Create a new lesson
  * @route POST /api/lessons
 */
 const createLesson = asyncHandler(async (req, res) => {
-    if (!req.files || req.files.length === 0) {
+    console.log('cretae lesson');
+    console.log(req.body)
+    if (!req.file) {
         return res.status(400).send('No files uploaded.');
     }
-    
+
     const { title, objectives} = req.body
-    const uploadedFiles = req.files;
-    let content_location = null;
-    let js_location = null;
-    let css_location = null;
-    let content_type = null
-
-    uploadedFiles.forEach(file => {
-        const fileType = file.contentType.split('/')[0];
-        const fileLocation = file.location; 
-
-        if (fileType === 'text' && file.contentType.includes('html')) {
-            content_location = fileLocation;
-            content_type = file.contentType
-        } else if (fileType === 'application' && file.contentType.includes('javascript')) {
-            js_location = fileLocation;
-        } else if (fileType === 'text' && file.contentType.includes('css')) {
-            css_location = fileLocation;
-        }
-    });
-
-    if (!content_location) {
-        return res.status(400).send('HTML file is required!');
-    }
-
-    const query = `INSERT INTO lessons (title, content_type, week, content_location, js_location, css_loaction) 
-    VALUES ($1, $2, $3, $4, $5, $6) RETURNING *`
-    const value = [title, content_type, week, content_location, js_location, css_location]
+    const {key, mimetype} = req.file;
+    const query = `INSERT INTO lessons (title, content_type, content_location) 
+    VALUES ($1, $2, $3) RETURNING *`
+    const value = [title, mimetype, key]
     const createLessonResult = await pool.query(query, value);
     if (createLessonResult) {
-        const query = `INSERT INTO objectives VALUES (lesson_id, description) VALUES ($1, $2)`
-        const createObjectivesResult = await pool.query(query, [createLessonResult.id, objectives]);
-
+        const query = `INSERT INTO objectives (lesson_id, description) VALUES ($1, $2) RETURNING *`
+        const createObjectivesResult = await pool.query(query, [createLessonResult.rows[0].id, JSON.parse(objectives)]);
+        console.log('created objectives: ', createObjectivesResult);
+        
         if (createObjectivesResult) {
-            res.status(200).json({message: 'Lesson uploaded succesfully', lesson_id: createLessonResult.rows.id});
+            res.status(200).json({message: 'Lesson uploaded succesfully', lesson_id: createLessonResult.rows[0].id});
         }
     }
 });
@@ -62,6 +36,7 @@ const createLesson = asyncHandler(async (req, res) => {
  * @route GET /api/lessons
 */
 const getAllLessons = asyncHandler(async (req, res) => {
+    console.log('get lessons recieved')
     const allLessons = await pool.query('SELECT title, id, week FROM lessons')
 
     if (allLessons.rows.length === 0) {
@@ -76,38 +51,25 @@ const getAllLessons = asyncHandler(async (req, res) => {
  * @route GET /api/lessons/:id
 */
 const getLessonById = asyncHandler(async (req, res) => {
-    const { lesson_id } = req.params
-    const result = await pool.query('SELECT content_location, js_location, css_location FROM lessons WHERE id = $1', [lesson_id]);
+    const { id } = req.params
+    const result = await pool.query('SELECT content_location FROM lessons WHERE id = $1', [id]);
+    console.log(`id: ${id}`,result);
 
     if (result.rows.length === 0) {
         return res.status(404).json({message: 'Lesson not found'});
     }
-    const { content_location, js_location, css_location } = result.rows[0];
 
-    const filePromises = [
-        s3.getObject({ Bucket: process.env.S3_BUCKET_NAME, Key: content_location }).promise(),
-        s3.getObject({ Bucket: process.env.S3_BUCKET_NAME, Key: js_location }).promise(),
-        s3.getObject({ Bucket: process.env.S3_BUCKET_NAME, Key: css_location }).promise()
-    ];
+    const { content_location } = result.rows[0];
+    const params = {
+        Bucket: process.env.S3_BUCKET_NAME,
+        Key: content_location 
+    };
 
-    const [htmlData, jsData, cssData] = await Promise.all(filePromises);
-    
-    const combinedContent = `
-    <!DOCTYPE html>
-    <html>
-    <head>
-        <title>Lesson Content</title>
-        <style>${cssData.Body.toString()}</style>
-    </head>
-    <body>
-        ${htmlData.Body.toString()}
-        <script>${jsData.Body.toString()}</script>
-    </body>
-    </html>
-`;
+    const command = new GetObjectCommand(params);
+    const { Body, ContentType } = await s3Client.send(command);
 
-    res.set('Content-Type', 'text/html');
-    res.send(combinedContent);
+    res.setHeader('Content-Type', ContentType);
+    Body.pipe(res);
 });
 
 /** 
@@ -115,18 +77,20 @@ const getLessonById = asyncHandler(async (req, res) => {
  * @route GET /api/lessons/:id/objectives
 */
 const getLessonObjectivesById = asyncHandler(async (req, res) => {
-    const { lesson_id } = req.params
-    const objectives = await pool.query('SELECT description FROM objectives WHERE id = $1', [lesson_id]);
-
+    console.log('get lesson objectives')
+    const { id } = req.params
+    console.log(id)
+    const objectives = await pool.query('SELECT description FROM objectives WHERE lesson_id = $1', [id]);
+    console.log('objectives: ', objectives.rows[0].description);
     if (!objectives) {
         return res.status(500).send(`Can't get objectives`)
     }
 
-    if (objectives.rows.description.length === 0) {
-        return res.status(404).send('No objectives for this content')
+    if (objectives.rows[0].description.length === 0) {
+        return res.status(404).send('No objectives for this lesson')
     } 
 
-    res.status(200).json({objectives: objectives.rows})    
+    res.status(200).json({objectives: objectives.rows[0].description})    
 });
 
 

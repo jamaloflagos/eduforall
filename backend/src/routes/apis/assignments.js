@@ -9,7 +9,8 @@ const {
     getAssignmentById,
     deleteAssignment,
     updateAssignment,
-    submitAssignment
+    submitAssignment,
+    checkAssignmentSubmitted
     } = require('../../controllers/assignmentsController');
 
 const router = express.Router();
@@ -23,6 +24,9 @@ router.route('/:id')
     .get(getAssignmentById)
     .put(updateAssignment)
     .delete(deleteAssignment)
+
+    router.route('/:id/submission-status')
+    .get(checkAssignmentSubmitted)
 
 router.route('/:id/submit')
     .post(upload.single('assignment_answer'), submitAssignment)

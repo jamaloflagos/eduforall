@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import SubmissionItem from './SubmissionItem'; 
-import { useAuth } from '../hooks/useAuth';
+// import { useAuth } from '../hooks/useAuth';
 
 const RecentSubmissionsList = () => {
   const [submissions, setSubmissions] = useState([]);
@@ -13,7 +13,7 @@ const RecentSubmissionsList = () => {
       setIsLoading(true);
 
       try {
-        const res = await fetch('http://localhost:4000/api/v1/submissions', {
+        const res = await fetch('https://eduforall-backend.vercel.app/api/v1/submissions', {
           headers: {
             'Content-Type': 'application/json',
             'Role': 'tutor'
@@ -33,7 +33,7 @@ const RecentSubmissionsList = () => {
       }
     };
 
-    // fetchSubmissions();
+    fetchSubmissions();
   }, []);
 
   if (isLoading) {

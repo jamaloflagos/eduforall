@@ -2,22 +2,23 @@ import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 // import { useAuth } from '../hooks/useAuth';
 
-const CreateResourceModal = ({ resourceType, onClose, onSubmit, lesson_id }) => {
+const CreateResourceModal = ({ resourceType, onClose, onSubmit, lesson_id}) => {
   const [title, setTitle] = useState('');
+  // const [lesson_id , setLesson_id] = useState('');
+  const [error, setError] = useState('');
   const [description, setDescription] = useState(''); // For lessons and quizzes
   // const [week, setWeek] = useState(''); // For lessons
   const [due_date, setDue_date] = useState(''); // For assignments
   const [objectives, setObjectives] = useState(['']); // Start with one empty objective
-  const [selectedFiles, setSelectedFiles] = useState([]);
+  const [selectedFile, setSelectedFile] = useState([]);
   // const { authTokens } = useAuth();
   const [questions, setQuestions] = useState([
     { question: '', options: ['', '', '', ''], answer: null }, // Initial question
   ]);
 
   const handleFileChange = (event) => {
-    const files = Array.from(event.target.files).slice(0, 3); // Limit to 3 files
-    setSelectedFiles(files);
-  };
+    setSelectedFile(event.target.files[0]); 
+};
 
   const addObjective = () => {
     setObjectives([...objectives, '']);
@@ -27,6 +28,7 @@ const CreateResourceModal = ({ resourceType, onClose, onSubmit, lesson_id }) => 
     const newObjectives = [...objectives];
     newObjectives[index] = value;
     setObjectives(newObjectives);
+    console.log(objectives)
   };
 
   const removeObjective = (index) => {
@@ -68,61 +70,72 @@ const CreateResourceModal = ({ resourceType, onClose, onSubmit, lesson_id }) => 
     const newQuestions = questions.filter((_, i) => i !== index);
     setQuestions(newQuestions);
   };
+  console.log(title, objectives, selectedFile)
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const formData = {
-      title,
-      due_date,
-      description,
-      lesson_id // For quizzes and assignments
-    };
-
-    if (resourceType === 'lessons') {
-      formData.lesson_content = selectedFiles
-      formData.objectives = objectives.filter(obj => obj.trim() !== '')
+    const data = {};
+    
+    const formData = new FormData();
+    
+    if (resourceType === 'assignments') {
+      // formData.append('due_date', due_date);
+      // formData.append('description', description);
+      // formData.append('lesson_id', lesson_id);
+      data.due_date = due_date
+      data.description = description
+      data.lesson_id = lesson_id
+      }
+      
+      if (resourceType === 'lessons') {
+      formData.append('title', title);
+      formData.append('lesson_content', selectedFile);
+      formData.append('objectives', JSON.stringify(objectives));
+      console.log(formData.get('title'))
+    //   objectives.forEach(obj => {
+    //     if (obj.trim() !== '') {
+    //       formData.append('objectives[]', obj);
+    //     }
+    //  });
     }
     
     if (resourceType === 'quizzes') {
-      formData.questions = questions
+      data.questions = questions
+      data.lesson_id = lesson_id
     }
-    // Filter out null or empty values
-    const filteredData = Object.fromEntries(
-      Object.entries(formData).filter(([_, v]) => v !== null && v !== '')
-    );
-    console.log(formData); 
-    console.log(filteredData); 
-    console.log(selectedFiles);
+    
     try {
-      const response = await fetch(`http://localhost:4000/v1/api/${resourceType}`, {
+      console.log(data.description, data.lesson_id, data.due_date);
+      console.log(formData.title)
+      console.log(title, objectives, selectedFile)
+      const res = await fetch(`https://eduforall-backend.vercel.app/api/v1/${resourceType}`, {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Role': 'tutor'
-          // 'Authorization': `Bearer ${authTokens.accessToken}`
+        headers: resourceType === 'lessons' ? {'Role': 'tutor'} : {'Role': 'tutor',
+          'Content-Type': 'application/json'
         },
-        body: JSON.stringify(filteredData),
+        body: resourceType === 'lessons' ? formData : JSON.stringify(data)
       });
-
-      if (response.ok) {
-        const newResource = await response.json();
+      if (res.ok) {
+        const newResource = await res.json(); 
+        // console.log(newResource);
+        // setLesson_id(newResource.lesson_id)
         onSubmit(newResource); // Notify parent component of success
         onClose(); // Close the modal
       } else {
         // Handle errors, e.g., display an error message to the user
       }
-    } catch (error) {
+    } catch (err) {
+      setError(err.message)
       console.error('Error creating resource:', error);
       // Handle errors, e.g., display an error message to the user
     }
   };
 
-  // ... (Form fields based on resourceType - you'll need to customize this)
+  console.log(lesson_id);
 
   return (
     <div className="modal">
-      <form onSubmit={handleSubmit}>
-        {/* ... form fields for title, content, week, dueDate, etc. ... */}
+      <form onSubmit={handleSubmit} encType="multipart/form-data">
         
         {resourceType === 'lessons' && (
           <div>
@@ -140,13 +153,13 @@ const CreateResourceModal = ({ resourceType, onClose, onSubmit, lesson_id }) => 
               </div>
             ))}
             <button type="button" onClick={addObjective}>Add Objective</button>
-            <input type="file" multiple onChange={handleFileChange} />
+            <input type="file" onChange={handleFileChange} name="lesson_content"/>
 
-            <ul>
+            {/* <ul>
                 {selectedFiles.map((file, index) => (
                 <li key={index}>{file.name}</li>
                 ))}
-            </ul>
+            </ul> */}
           </div>
         )}   
 
@@ -194,6 +207,7 @@ const CreateResourceModal = ({ resourceType, onClose, onSubmit, lesson_id }) => 
                 <input type="date" value={due_date} onChange={(e) => setDue_date(e.target.value)} />
             </div>
         )}
+        {error && <h1>{error}</h1>}
         <button type="submit">Create</button>
         <button type="button" onClick={onClose}>Cancel</button>
       </form>
@@ -205,7 +219,7 @@ CreateResourceModal.propTypes = {
   resourceType: PropTypes.oneOf(['lessons', 'quizzes', 'assignments']).isRequired,
   onClose: PropTypes.func.isRequired,
   onSubmit: PropTypes.func.isRequired,
-  lesson_id: PropTypes.number.isRequired,
+  // lesson_id: PropTypes.number.isRequired,
 };
 
 export default CreateResourceModal;

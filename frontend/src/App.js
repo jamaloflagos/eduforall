@@ -11,7 +11,7 @@ function App() {
     <div className="app">
         <h1>JavaScript</h1>
         <Routes>
-          <Route path='/' element={user ? <Dashboard /> : <Navigate to='/login' />}/>
+          <Route path='*' element={user ? <Dashboard /> : <Navigate to='/login' />}/>
           <Route path='/register' element={!user ? <RegisterPage /> : <Navigate to='/' />}/>
           <Route path='/login' element={!user ? <LoginPage /> : <Navigate to='/' />}/>
           <Route path='/dashboard' element={!user ? <Dashboard /> : <Navigate to='/' />}/>

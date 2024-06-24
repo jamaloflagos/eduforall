@@ -3,9 +3,9 @@ import PropTypes from 'prop-types';
 import { CircularProgressbar } from 'react-circular-progressbar';
 import 'react-circular-progressbar/dist/styles.css'; 
 // import './StudentProgressCard.css'; 
-import { useAuth } from '../hooks/useAuth';
+// import { useAuth } from '../hooks/useAuth';
 
-const StudentProgressCard = ({ studentId }) => {
+const StudentProgressCard = ({ student_id }) => {
   const [progressData, setProgressData] = useState(null);
   const [studentData, setStudentData] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -16,14 +16,14 @@ const StudentProgressCard = ({ studentId }) => {
     const fetchProgress = async () => {
       try {
         const [studentResponse, submissionsResponse] = await Promise.all([
-          fetch(`http://localhost:4000/api/students/${studentId}`, {
+          fetch(`https://eduforall-backend.vercel.app/api/students/${student_id}`, {
             headers: {
               'Content-Type': 'application/json',
               'Role': 'tutor'
               // 'Authorization': `Bearer ${authTokens.accessToken}`
             }
           }),
-          fetch(`http://localhost:4000/api/submissions?studentId=${studentId}`, {
+          fetch(`https://eduforall-backend.vercel.app/api/submissions/${student_id}`, {
             headers: {
               'Content-Type': 'application/json',
               'Role': 'tutor'
@@ -44,7 +44,7 @@ const StudentProgressCard = ({ studentId }) => {
         // Calculate lessonsCompleted, totalLessons, assignmentsSubmitted, totalAssignments, averageQuizScore
         // Calculate progress based on submissions and local storage
         const lessonsCompleted = studentData.completed_lessons || [];
-        const totalLessons =  await fetch (`http://localhost:4000/api/v1/lessons/`, {
+        const totalLessons =  await fetch (`https://eduforall-backend.vercel.app/api/v1/lessons/`, {
           headers: {
             'Content-Type': 'application/json',
             'Role': 'tutor'
@@ -86,8 +86,8 @@ const StudentProgressCard = ({ studentId }) => {
         setLoading(false); // Set loading to false, whether success or failure
       }
     };
-  // fetchProgress();
-  }, [studentId]);
+  fetchProgress();
+  }, [student_id]);
   
   if (loading) {
     return <div>Loading...</div>;

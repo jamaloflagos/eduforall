@@ -20,9 +20,10 @@ const AssignmentSubmissionForm = ({ assignment_id }) => {
       }
 
       const formData = new FormData();
-      formData.append('answer', selectedFile);
+      formData.append('assignment_answer', selectedFile);
+      
       try {
-          const res = await fetch(`http://localhost:4000/api/v1/assignments/${assignment_id}/submit`, { 
+          const res = await fetch(`https://eduforall-backend.vercel.app/api/v1/assignments/${assignment_id}/submit`, { 
               method: 'POST',
               body: formData,
               headers: {
@@ -43,27 +44,38 @@ const AssignmentSubmissionForm = ({ assignment_id }) => {
   useEffect(() => {
     // Fetch submission status from API endpoint (see backend implementation below)
     const fetchSubmissionStatus = async () => {
+      console.log(assignment_id);
       try {
-        const res = await fetch(`http://localhost:4000/api/v1/assignments/${assignment_id}/submission-status`,{ 
+        const res = await fetch(`https://eduforall-backend.vercel.app/api/v1/assignments/${assignment_id}/submission-status`,{ 
           headers: {
             'Authorization': `Bearer ${authTokens.accessToken}`
           }
         });
-        if (res.ok) {
-          const { hasSubmitted } = await res.json();
-          setHasSubmitted(hasSubmitted);
+        if (res.ok && res.status === 200) {
+          const data = await res.json();
+          console.log(data)
+          setHasSubmitted(data.hasSubmitted);
+          console.log(hasSubmitted)
+          return
         }
-        const {message} = await res.json();
-        throw new Error(message);
-      } catch (error) {
-        setMessage(error.message);
+
+        // if (res.status === 204) {
+        //   const data = await res.json();
+        //   console.log(data)
+        // }
+
+        const data = await res.json();
+        throw new Error(data.message);
+      } catch (err) {
+        console.log(err)
+        setMessage(err.message);
       }
     }
 
     if (assignment_id) {
       fetchSubmissionStatus();
     }
-  }, [assignment_id, authTokens.accessToken]);
+  }, [assignment_id]);
   return (
 
   <div>
@@ -71,20 +83,20 @@ const AssignmentSubmissionForm = ({ assignment_id }) => {
     <p>You have already submitted an answer for this assignment. Await your grade!</p>
   ) : (
     <form encType="multipart/form-data" onSubmit={handleUpload}>
-      <label htmlFor="answer">Submit your answer:</label> <br />
-      <input type="file" name="answer" id="answer" onChange={handleFileChange}/>
+      <label htmlFor="assignment_answer">Submit your answer:</label> <br />
+      <input type="file" name="assignment_answer" id="assignment_answer" onChange={handleFileChange}/>
       <button type="submit">Submit Answer</button>
       {message && <h1>{message}</h1>}
     </form>
   )}
-  {message && <h1>{message}</h1>}
+  {!hasSubmitted && <p>You have not submit an answer for this assignment, go ahead and do your task!!</p>}
 </div>
   );
 };
 
 AssignmentSubmissionForm.propTypes = {
-  assignmentId: PropTypes.number.isRequired,
-  onSubmitSuccess: PropTypes.func.isRequired,
+  assignment_id: PropTypes.number.isRequired,
+  // onSubmitSuccess: PropTypes.func.isRequired,
 };
 
 export default AssignmentSubmissionForm;

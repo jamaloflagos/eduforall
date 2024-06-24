@@ -25,7 +25,7 @@ const TutorDashboard = () => {
   console.log(lesson_id);
   return (
     <div className="tutor-dashboard">
-      <StudentProgressOverview />
+      {/* <StudentProgressOverview /> */}
       {/* <RecentSubmissionsList /> */}
 
       {/* Buttons to trigger modals */}

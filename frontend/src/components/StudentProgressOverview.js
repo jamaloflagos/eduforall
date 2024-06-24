@@ -11,7 +11,7 @@ const StudentProgressOverview = () => {
   useEffect(() => {
     const fetchStudents = async () => {
       try {
-        const res = await fetch('https://eduforall-backend.vercel.app/api/v1/students', {
+        const res = await fetch('http://localhost:4000/api/v1/students', {
           headers: {
             'Content-Type': 'application/json',
             'Role': 'tutor'
@@ -33,9 +33,9 @@ const StudentProgressOverview = () => {
       }
     };
 
-    fetchStudents();
+    // fetchStudents();
   }, []); 
-console.log(students)
+
   if (loading) {
     return <div>Loading...</div>; // Or a more elaborate loading indicator
   }
@@ -49,7 +49,7 @@ console.log(students)
       <h3>Student Progress Overview</h3>
       <div className="student-progress-list">
         {students.map(student => (
-          <StudentProgressCard key={student.id} student_id={student.id} />
+          <StudentProgressCard key={student.id} studentId={student.id} />
         ))}
       </div>
     </div>

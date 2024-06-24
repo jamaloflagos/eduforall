@@ -12,15 +12,15 @@ function Quiz({lesson_id}) {
   useEffect(() => {
     const fetchQuiz = async () => {
       try {
-        const res = await fetch(`https://eduforall-backend.vercel.app/api/v1/quizzes/${lesson_id}`, {
+        const res = await fetch(`http://localhost:4000/api/v1/quizzes/${lesson_id}`, {
           headers: {
             'Content-Type': 'application/json',
             'Authorization': `Bearer ${authTokens.accessToken}`
           }
         });
         if (res.ok) {
-          const data = await res.json();
-          setQuizdata(data.quiz_data);
+          const { quiz_data } = await res.json();
+          setQuizdata(quiz_data);
           setMessage(null);
 
           // Check for existing results in localStorage
@@ -29,12 +29,11 @@ function Quiz({lesson_id}) {
             setSelectedAnswers(storedResults.answers);
             setShowResults(true);
           } else {
-            setSelectedAnswers(new Array(data.quiz_data.length).fill(null));
-            setShowResults(false);
+            setSelectedAnswers(new Array(quiz_data.length).fill(null));
           }
         } else {
-          const data = await res.json();
-          throw new Error(data.message);
+          const { message } = await res.json();
+          throw new Error(message);
         }
       } catch (error) {
         setMessage(error.message);
@@ -61,8 +60,7 @@ function Quiz({lesson_id}) {
 
   const handleRetakeQuiz = () => {
     setSelectedAnswers(new Array(quizData.length).fill(null)); 
-    setShowResults(false);  
-    localStorage.removeItem(`quizResults_${lesson_id}`)
+    setShowResults(false);                                   
   };
   const calculateScore = () => {
     return selectedAnswers.reduce((score, answer, index) => {
@@ -73,12 +71,12 @@ function Quiz({lesson_id}) {
   return (
     <div>
       <h2>Quiz Time!</h2>
-      { quizData.length > 0 ? (
+      { quizData ? (
       quizData.map((question, index) => (
         <div key={index}>
           <h3>{question.question}</h3>
           <div>
-            {question.options && question.options.map((option, i) => (
+            {question.options.map((option, i) => (
               <div key={i}>
                 <label>
                   <input 

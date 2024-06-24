@@ -19,14 +19,13 @@ const TutorDashboard = () => {
     // Handle the newly created resource data here
     console.log('New resource created:', newResource); 
     setCreatedResource(newResource);
-    setLesson_id(newResource.lesson_id);
+    setLesson_id(createdResource.lesson_id);
     // You might want to update the relevant section of the dashboard with this new resource
   };
-  console.log(lesson_id);
   return (
     <div className="tutor-dashboard">
       <StudentProgressOverview />
-      {/* <RecentSubmissionsList /> */}
+      <RecentSubmissionsList />
 
       {/* Buttons to trigger modals */}
       <button onClick={() => setShowModal(true) & setModalType('lessons')}>Create Lesson</button>
@@ -34,7 +33,6 @@ const TutorDashboard = () => {
       <button onClick={() => setShowModal(true) & setModalType('assignments')}>Create Assignment</button>
 
       {/* CreateResourceModal (conditionally rendered based on modal state) */}
-      {lesson_id && <h1>{lesson_id}</h1>}
       {showModal && <CreateResourceModal 
         resourceType={modalType} 
         onClose={onClose} 

@@ -8,7 +8,7 @@ const ObjectivesCard = ({lesson_id}) => {
     useEffect(() => {
         const fetchObjectives = async () => {
           try {
-            const res = await fetch(`https://eduforall-backend.vercel.app/api/v1/lessons/${lesson_id}/objectives`, {
+            const res = await fetch(`http://localhost:4000/api/v1/objectives/${lesson_id}`, {
               headers: {
                 'Content-Type': 'application/json',
                 'Authorization': `Bearer ${authTokens.accessToken}`
@@ -16,14 +16,13 @@ const ObjectivesCard = ({lesson_id}) => {
             });
       
             if (res.ok) {
-              const data = await res.json();
-              console.log(data.objectives)
-              setObjectives(data.objectives);
+              const { objectives } = res.json();
+              setObjectives(objectives);
               return
             }
       
-            const data = res.json();
-            throw new Error(data.message);
+            const {message} = res.json();
+            throw new Error(message);
           } catch (error) {
             setMessage(message);
           }
@@ -32,14 +31,14 @@ const ObjectivesCard = ({lesson_id}) => {
         if (user) {
           fetchObjectives();
         }
-       }, [lesson_id]);
+       }, [lesson_id, user, authTokens.accessToken, message])
 
   return (
     <div>
         <h1>Objectives</h1>
         {message && <h1>{message}</h1>}
         <ul>
-            {objectives && objectives.map(objective => (
+            {objectives.description.map(objective => (
                 <li>
                     <h1>{objective}</h1>
                 </li>

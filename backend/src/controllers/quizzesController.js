@@ -31,24 +31,24 @@ function calculateScore(questions, selectedAnswers) {
 */
 const createQuiz = asyncHandler(async (req, res) => {
     const { lesson_id, questions } = req.body
-    const quiz = JSON.stringify(Array.from(questions))
-    const query = `INSERT INTO quizzes (lesson_id, questions) VALUES($1, $2) RETURNING *`
-    const createQuizResult = await pool.query(query, [lesson_id, quiz]);  
-    
+    const query = `INSERT INTO quizzes (lesson_id, questions) VALUES($1, $2)`
+    const createQuizResult = await pool.query(query, [lesson_id, questions]);
+
     if (!createQuizResult) {
-        return res.status(500).json({message: `Can't create quiz`});
+        res.status(500).send(`Can't create quiz`);
     }
 
-    res.status(200).json({message: 'Quiz created succesfully', lesson_id: lesson_id})
+    res.status(200).json({message: 'Quiz created succesfully', lesson_id})
 });
 
 /** 
- * Get a single quiz by lesson ID
+ * Get a single quiz by ID
  * @route GET /api/quizzes/:id
 */
 const getQuizById = asyncHandler(async (req, res) => {
-    const { id } = req.params
-    const quiz = await pool.query(`SELECT * FROM quizzes WHERE lesson_id = $1`, [id]);
+    const { lesson_id } = req.params
+    const quiz = await pool.query(`SELECT * FROM quizzes WHERE lesson_id = $1`, [lesson_id]);
+
     if (!quiz) {
         res.status(500).json({message: `Can't fetch quiz`});
     }
@@ -57,7 +57,7 @@ const getQuizById = asyncHandler(async (req, res) => {
         res.status(400).json({message: 'No quiz for this lesson!'})
     }
 
-    res.status(200).json({quiz_data: quiz.rows[0].questions})
+    res.status(200).json({quiz_data: quiz.rows.questions})
 });
 
 /** 

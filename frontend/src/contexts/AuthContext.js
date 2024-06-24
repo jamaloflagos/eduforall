@@ -21,7 +21,7 @@ export const AuthProvider = ({ children }) => {
 
   const loginUser = async (email, password) => {
     const formData = {email, password}
-    const res = await fetch('https://eduforall-backend.vercel.app/api/v1/auth/login', {
+    const res = await fetch('http://localhost:4000/api/v1/auth/login', {
       method: 'POST',
       body: JSON.stringify(formData),
       headers: {
@@ -47,7 +47,7 @@ export const AuthProvider = ({ children }) => {
 
   const registerUser = async (formData) => { 
     console.log('register user')
-    const res = await fetch('https://eduforall-backend.vercel.app/api/v1/auth/register', {
+    const res = await fetch('http://localhost:4000/api/v1/auth/register', {
       method: 'POST',
       body: JSON.stringify(formData),
       headers: {
@@ -70,7 +70,7 @@ export const AuthProvider = ({ children }) => {
   };
 
   const logoutUser = async () => {
-    const res = await fetch('https://eduforall-backend.vercel.app/api/v1/auth/logout', {
+    const res = await fetch('http://localhost:4000/api/v1/auth/logout', {
       method: 'POST',
     })
 
@@ -81,25 +81,23 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
-  // const updateToken = async () => {
-  //   // Logic to refresh the access token using the refresh token
-  //   // ...
-  //   const res = await fetch('https://eduforall-backend.vercel.app/api/v1/auth/refresh', {
-  //     method: 'POST',
-  //     credentials: 'include'
-  //   })
+  const updateToken = async () => {
+    // Logic to refresh the access token using the refresh token
+    // ...
+    const res = await fetch('http://localhost:4000/api/auth/refresh', {
+      method: 'POST'
+    })
 
-  //   if (res.ok) {
-  //   const data = await res.json()
-  //   setAuthTokens(data.token);
-  //   setUser(jwtDecode(data.token));
-  //   localStorage.setItem('authTokens', JSON.stringify(data.token));
-  //   } else {
-  //     // const data = await res.json()
-  //     // throw Error(data.messgae);
-  //     logoutUser();
-  //   }
-  // };
+    if (!res.ok) {
+      const {error} = await res.json()
+      throw Error(error);
+    }
+
+    const { token: accessToken } = await res.json()
+    setAuthTokens(accessToken);
+    setUser(jwtDecode(accessToken));
+    localStorage.setItem('authTokens', JSON.stringify(accessToken));
+  };
 
   useEffect(() => {
     if (authTokens) {
@@ -118,35 +116,14 @@ export const AuthProvider = ({ children }) => {
   };
 
   // Update token every 10 minutes if authenticated
-  // useEffect(() => {
-  //   let timeoutId;
-
-  //   if (authTokens) {
-  //     const decodedToken = jwtDecode(authTokens.accessToken);
-  //     const timeToExpiry = decodedToken.exp * 1000 - Date.now(); // In milliseconds
-
-  //     // Set timeout slightly before actual expiration
-  //     timeoutId = setTimeout(updateToken, timeToExpiry - (5 * 60 * 1000)); // 5 minutes before
-  //   }
-
-  //   return () => {
-  //     if (timeoutId) {
-  //       clearTimeout(timeoutId); 
-  //     }
-  //   }; // Clear timeout on unmount or when authTokens change
-  // }, [authTokens]); 
-
-
-
-  // useEffect(() => {
-  //   if (authTokens) {
-  //     const interval = setInterval(() => {
-  //       updateToken();
-  //     }, 10 * 60 * 1000); // 10 minutes * 60 seconds * 1000 milliseconds
-  //     return () => clearInterval(interval); // Clear interval on unmount
-  //   }
-  // }, [authTokens, loading]);
-  
+  useEffect(() => {
+    if (authTokens) {
+      const interval = setInterval(() => {
+        updateToken();
+      }, 10 * 60 * 1000); // 10 minutes * 60 seconds * 1000 milliseconds
+      return () => clearInterval(interval); // Clear interval on unmount
+    }
+  }, [authTokens, loading]);
 
   return (
     <AuthContext.Provider value={contextData}>

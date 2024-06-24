@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useAuth } from '../hooks/useAuth';
+import { Link } from 'react-router-dom';
 
 const LoginPage = () => {
   const [email, setEmail] = useState('');
@@ -17,9 +18,9 @@ const LoginPage = () => {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
+    <div>
+        <form onSubmit={handleSubmit}>
       <h2>Login</h2>
-      {message && <div className="message">{message}</div>}
       <div>
         <label htmlFor="email">Email:</label>
         <input 
@@ -28,7 +29,7 @@ const LoginPage = () => {
           value={email} 
           onChange={(e) => setEmail(e.target.value)} 
           // required 
-        />
+          />
       </div>
       <div>
         <label htmlFor="password">Password:</label>
@@ -40,8 +41,15 @@ const LoginPage = () => {
           // required 
         />
       </div>
+      {message && <div className="message">{message}</div>}
       <button type="submit">Login</button>
     </form>
+
+    <div>
+      <h4>Don't have an account yet?</h4>
+      <Link to='/register'>Register</Link>
+    </div>
+    </div>
   );
 };
 

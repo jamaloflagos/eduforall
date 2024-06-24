@@ -13,12 +13,19 @@ const RegisterPage = () => {
   });
   const navigate = useNavigate()
   const [error, setError] = useState('');
-  // const [message, setMessage] = useState('');
+  const [imageMessage, setImageMessage] = useState('');
   const [selectedFile, setSelectedFile] = useState(null);
   const { registerUser, message } = useAuth();
 
     const handleFileChange = (event) => {
-        setSelectedFile(event.target.files[0]); 
+      const file = event.target.files[0]
+      if (!file.type.startsWith('image/')) {
+        setImageMessage("Please select an image.");
+        return;
+      }
+
+      setImageMessage(null);
+      setSelectedFile(file); 
     };
 
   const handleChange = (e) => {
@@ -34,8 +41,8 @@ const RegisterPage = () => {
   const handleSubmit = async (e) => {
     console.log('handle submit')
     e.preventDefault();
-    // if (!selectedFile) {
-    //     setMessage("Please select a file.");
+    // if (!selectedFile.type.startsWith('image/')) {
+    //     setImageMessage("Please select an image.");
     //     return;
     // }
 
@@ -111,7 +118,7 @@ const RegisterPage = () => {
       <div>
         <label htmlFor="profile_picture">Profile Picture(Optional):</label>
         <input type="file" name="profile_picture" id="profile_picture" onChange={handleFileChange}/>
-        {message && <div>{message}</div>}
+        {imageMessage && <p>{imageMessage}</p>}
       </div>
       <div>
         <label htmlFor="password">Password:</label>
@@ -122,8 +129,9 @@ const RegisterPage = () => {
           value={formData.password} 
           onChange={handleChange} 
           required 
-        />
+          />
       </div>
+        {message && <div>{message}</div>}
       <button type="submit">Register</button>
     </form>
   );

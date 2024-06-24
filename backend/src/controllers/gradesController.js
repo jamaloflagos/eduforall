@@ -6,23 +6,25 @@ const pool = require('../db/postgres')
  * @route GET /api/grades
 */
 const getAllGrades = asyncHandler(async (req, res) => {
-    const student_id = req.user.id
-    const query = `SELECT g.grade, g.feedback, s.assignment_id, a.description
-                    FROM grades g
+    const {student_id} = req.body
+    const query = `SELECT g.grade, g.feedback, g.submission_id, s.assignment_id, a.description
+                    FROM grades_feedback g
                     JOIN submissions s ON g.submission_id = s.id
                     JOIN assignments a ON s.assignment_id = a.id  
                     WHERE s.student_id = $1`
     const grades = await pool.query(query, [student_id]);
-
+    console.log(grades)
     if (!grades) {
-        res.status(500).send(`Cannot fetch grades`);
+        return res.status(500).json({message: `Cannot fetch grades`});
     }
 
     if (grades.rows.length === 0) {
-        res.status(204).send('No grades administered');
+        return res.status(204).json({messgae: 'No grades administered'});
     }
+    console.log(grades.rows);
+    
 
-    res.status(200).json({grades});
+    res.status(200).json({grades: grades.rows});
 });
 
 /** 

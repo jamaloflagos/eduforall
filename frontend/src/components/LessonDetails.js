@@ -6,15 +6,18 @@ import Quiz from "./Quiz";
 import { useAuth } from "../hooks/useAuth";
 
 const LessonDetails = ({ currentLesson }) => {
+  console.log('lesson details')
+  
   const { authTokens, user } = useAuth();
-  const { lesson_id } = currentLesson;
+  const { id } = currentLesson;
+  console.log(id, currentLesson, "in lesson detail")
   const [lessonContent, setLessonContent] = useState();
   const [message, setMessage] = useState();
   
   useEffect(()=> {
     const fetchLessonDetail = async () => {
       try {
-        const res = await fetch (`http://localhost:4000/api/v1/lessons/${lesson_id}`, {
+        const res = await fetch (`https://eduforall-backend.vercel.app/api/v1/lessons/${id}`, {
           headers: {
             'Content-Type': 'application/json',
             'Authorization': `Bearer ${authTokens.accessToken}`
@@ -22,41 +25,43 @@ const LessonDetails = ({ currentLesson }) => {
         });
   
         if (res.ok) {
-          const content = res.text();
+          const content = await res.text();
           setLessonContent(content);
           return
         }
   
         if (!res.ok && res.status === 404) {
-          const {message} = await res.json();
-          setMessage(message);
+          const data = await res.json();
+          setMessage(data.message);
           return
         }
-        
-        const {message} = res.json();
-        throw new Error(message);
+
+        const data = await res.json();
+        throw new Error(data.message);
   
-      } catch (error) {
-        setMessage(error.message);
+      } catch (err) {
+        setMessage(err.message);
       }
     }
     
     if (user) {
       fetchLessonDetail()
     }
-  }, [user, authTokens.accessToken, lesson_id])
+  }, [user, authTokens.accessToken, id])
+
+  console.log(message)
   
   return (
       <div>
-        <ObjectivesCard lesson_id={lesson_id}/>
+        <ObjectivesCard lesson_id={id}/>
         {message ? <h1>{message}</h1> : <LessonContent content={lessonContent} />}
         {/* {!quizCompleted ? (
           <QuizForm quiz={lesson.quiz} onSubmit={handleQuizSubmit} />
         ) : (
           <QuizResults quizResults={quizResults} />
         )} */}
-        <Quiz lesson_id={lesson_id}/>
-        <AssignmentCard  lesson_id={lesson_id} />
+        <Quiz lesson_id={id}/>
+        <AssignmentCard  lesson_id={id} />
       </div>
     );
   };

@@ -4,11 +4,6 @@ const bcrypt = require('bcrypt');
 const validator = require('validator');
 const pool = require('../db/postgres');
 
-// const generateJWT = (payload) => {
-//     jwt.sign(payload, process.env.SECRET, {expiresIn: '15m'}, (err, token) => {
-
-//     })
-// }
 
 /** 
  * Create a new user

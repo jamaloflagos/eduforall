@@ -24,23 +24,23 @@ function Dashboard() {
             })
       
             if (res.ok && res.status === 200) {
-              const data= await res.json();
-              dispatch({type: "FETCH_LESSONS", payload: data.lessons});
-              if(data.lessons.length > 0) { // Check if there are data.lessons
-                setCurrentLesson(data.lessons[0]); // Default to the first lesson
-                navigate(`/dashboard/${data.lessons[0].id}`); // Navigate to the first lesson
+              const { lessons } = await res.json();
+              dispatch({type: "FETCH_LESSONS", payload: lessons});
+              if(lessons.length > 0) { // Check if there are lessons
+                setCurrentLesson(lessons[0]); // Default to the first lesson
+                navigate(`/dashboard/${lessons[0].id}`); // Navigate to the first lesson
               }
               return
             }
       
             if (res.ok && res.status === 204) {
-              const data= await res.json();
-              setMessage(data.message);
+              const { message } = await res.json();
+              setMessage(message);
               return
             }
       
-            const data = await res.json();
-            throw new Error(data.message);
+            const { message } = await res.json();
+            throw new Error(message);
           } catch (error) {
             setMessage(error.message);
           }
@@ -65,7 +65,7 @@ function Dashboard() {
                 <Sidebar lessons={lessons} onLessonSelect={handleLessonSelect} />
                 <div className="lesson-area">
                     {message && <h1>{message}</h1>}
-                    {/* <Routes>
+                    <Routes>
                         {lessons.map(lesson => (
                             <Route
                                 key={lesson.id}
@@ -73,7 +73,7 @@ function Dashboard() {
                                 element={<LessonDetails currentLesson={currentLesson}/>}
                             />
                         ))}
-                    </Routes> */}
+                    </Routes>
                 </div>
             </div>
         </div>

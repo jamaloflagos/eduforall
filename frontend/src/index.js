@@ -8,12 +8,12 @@ import { LessonProvider } from './contexts/LessonContext';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
-    <BrowserRouter>
-        <AuthProvider>
-        <LessonProvider>
+    <AuthProvider>
+    <LessonProvider>
+        <BrowserRouter>
             <App />
-        </LessonProvider>
-        </AuthProvider>
-    </BrowserRouter>
+        </BrowserRouter>
+    </LessonProvider>
+    </AuthProvider>
 );
 

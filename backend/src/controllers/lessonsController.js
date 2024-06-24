@@ -18,7 +18,7 @@ const createLesson = asyncHandler(async (req, res) => {
         return res.status(400).send('No files uploaded.');
     }
     
-    const { title, objectives} = req.body
+    const { title, week, objectives} = req.body
     const uploadedFiles = req.files;
     let content_location = null;
     let js_location = null;

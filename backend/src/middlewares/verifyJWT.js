@@ -2,12 +2,10 @@ const asyncHandler = require('express-async-handler');
 const jwt = require('jsonwebtoken');
 
 const verifyJWT = asyncHandler(async (req, res, next) => {
-    const {authorization, role} = req.headers
-    if (role === 'tutor') {
-        next();
-    }
+    const {authorization} = req.headers
+
     if(!authorization) {
-        return res.status(400).send('You are not authorised');
+        res.status(400).send('You are not authorised');
     }
 
     const token = authorization.split(" ")[1]
@@ -16,7 +14,7 @@ const verifyJWT = asyncHandler(async (req, res, next) => {
         const {id, role} = decoded
         req.user_id = id
         req.user_role = role
-        next();
+        next()
     })
 });
 

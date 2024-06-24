@@ -1,13 +1,12 @@
 import { useAuth } from "../hooks/useAuth"
 
 const Header = () => {
-    const { user, logoutUser } = useAuth();
-
+    const { user } = useAuth();
   return (
     <>
         <div>
         <div>Welcome, {user.user_name}</div>
-        <button onClick={logoutUser}>Logout</button>
+        <button>Logout</button>
         </div>
 
     </>

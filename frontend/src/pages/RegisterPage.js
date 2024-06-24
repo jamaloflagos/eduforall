@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { useAuth } from '../hooks/useAuth';
-import { useNavigate } from 'react-router-dom';
 const RegisterPage = () => {
   const [formData, setFormData] = useState({
     email: '',
@@ -11,38 +10,29 @@ const RegisterPage = () => {
     middlename: '', // Optional
     location: '', // Optional
   });
-  const navigate = useNavigate()
   const [error, setError] = useState('');
-  // const [message, setMessage] = useState('');
+  const [message, setMessage] = useState('');
   const [selectedFile, setSelectedFile] = useState(null);
-  const { registerUser, message } = useAuth();
+  const { register } = useAuth();
 
     const handleFileChange = (event) => {
         setSelectedFile(event.target.files[0]); 
     };
 
   const handleChange = (e) => {
-    const {name, value} = e.target
-        setFormData(prevFormData => {
-            return {
-                ...prevFormData,
-                [name]: value 
-            }
-        })
+    setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
   const handleSubmit = async (e) => {
-    console.log('handle submit')
     e.preventDefault();
-    // if (!selectedFile) {
-    //     setMessage("Please select a file.");
-    //     return;
-    // }
+    if (!selectedFile) {
+        setMessage("Please select a file.");
+        return;
+    }
 
-    // formData.append('profile_picture', selectedFile);
-    formData.profile_picture = selectedFile;
+    formData.append('profile_picture', selectedFile);
     try {
-      await registerUser(formData);
+      await register(formData);
     } catch (err) {
       setError(err.message); // More specific error handling on backend
     }
@@ -52,13 +42,11 @@ const RegisterPage = () => {
     <form onSubmit={handleSubmit}>
       <h2>Register</h2>
       {error && <div className="error">{error}</div>}
-      {message && <div className="message">{message}</div>}
       <div>
         <label htmlFor="firstname">First Name:</label>
         <input 
           type="text" 
           id="firstname" 
-          name="firstname"
           value={formData.firstname} 
           onChange={handleChange} 
           required 
@@ -69,7 +57,6 @@ const RegisterPage = () => {
         <input 
           type="text" 
           id="lastname" 
-          name="lastname"
           value={formData.lastname} 
           onChange={handleChange} 
           required 
@@ -80,7 +67,6 @@ const RegisterPage = () => {
         <input 
           type="text" 
           id="middlename" 
-          name="middlename"
           value={formData.middlename} 
           onChange={handleChange} 
           required 
@@ -91,7 +77,6 @@ const RegisterPage = () => {
         <input 
           type="email" 
           id="email" 
-          name="email"
           value={formData.email} 
           onChange={handleChange} 
           required 
@@ -102,7 +87,6 @@ const RegisterPage = () => {
         <input 
           type="location" 
           id="location" 
-          name="location"
           value={formData.location} 
           onChange={handleChange} 
           required 
@@ -118,7 +102,6 @@ const RegisterPage = () => {
         <input 
           type="password" 
           id="password" 
-          name="password"
           value={formData.password} 
           onChange={handleChange} 
           required 

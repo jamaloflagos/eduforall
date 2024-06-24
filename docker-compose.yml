@@ -5,19 +5,18 @@ services:
       args: 
         - NODE_ENV=development
     container_name: backend
-    command: npm run server
     ports: 
-      - "4000:4000"
+      - 4000:4000
     volumes:
-      - ./backend:/app
+      - ./backend/:/app
       - /app/node_modules
+    network_mode: host
     environment:
       - PORT=4000
       - S3_BUCKET_NAME=efa-uploads
       - AWS_REGION=af-south-1
       - AWS_ACCESS_KEY_ID=AKIAYS2NULJ7CGLV42PD
       - AWS_SECRET_ACCESS_KEY=cSQbBy3vgiGwF2cnUEolihrsXhrCL70OU
-      - SECRET=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
     depends_on:
       - postgres-db
 
@@ -34,9 +33,3 @@ services:
 
 volumes:
   postgres-data:
-
-# develop:
-#   backend: # specify the service name to watch
-#     watch: # Start a watch section
-#       - path: ./backend # specify the directory or files to watch
-#         action: sync

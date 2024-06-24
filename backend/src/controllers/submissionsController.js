@@ -23,11 +23,11 @@ const getAllSubmissions = asyncHandler(async (req, res) => {
     const submissions = pool.query(query, ['student', assignment_id]);
     
     if (!submissions) {
-        res.status(500).json({message: `Can't fetch submissions for this assignment`});
+        res.status(500).send(`Can't fetch submissions for this assignment`);
     }
 
     if (submissions.rows.length === 0) {
-        res.status(400).json({message: 'No submission for this assignment yet'});
+        res.status(400).send('No submission for this assignment yet');
     }
 
     res.status(200).json({submissions});
@@ -42,7 +42,7 @@ const getSubmissionById = asyncHandler(async (req, res) => {
     const student_id = req.user.id
     const submission = await pool.query('SELECT file_location FROM submissions WHERE submission_id = $1 ND student_id = $2', [submission_id, student_id]);
     if (!submission) {
-        res.status(500).json({message: `Can't fetch the file for this submission`})
+        res.status(500).send(`Can't fetch the file for this submission`)
     }
 
     const file_location = submission.rows.file_location
@@ -52,7 +52,7 @@ const getSubmissionById = asyncHandler(async (req, res) => {
       };
       s3.getObject(params, (err, data) => {
         if (err) {
-            return res.status(500).json({message: err.message});
+            return res.status(500).send(err);
         }
         res.attachment(file_location); 
         res.send(data.Body);      
@@ -70,10 +70,10 @@ const postSubmissionGrade = asyncHandler(async (req, res) => {
     const createSubmissionGradeResult = await pool.query(query, [submission_id, tutor_id, grade, feedback]);
 
     if (!createSubmissionGradeResult) {
-        return res.status(500).json({messgae: `Couldn't succesfullly add grades`});
+        res.status(500).send(`Couldn't succesfullly add grades`)
     }
 
-    res.status(200).json({messgae: 'Successfully graded'});
+    res.status(200).send('Successfully graded')
 });
 
 module.exports = {

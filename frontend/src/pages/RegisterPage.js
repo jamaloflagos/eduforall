@@ -90,7 +90,6 @@ const RegisterPage = () => {
           name="middlename"
           value={formData.middlename} 
           onChange={handleChange} 
-          required 
         />
       </div>
       <div>

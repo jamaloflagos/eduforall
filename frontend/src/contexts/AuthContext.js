@@ -1,9 +1,12 @@
 import React, { createContext, useState, useEffect } from 'react';
 import { jwtDecode } from 'jwt-decode'; // For decoding JWT tokens
+import { useNavigate } from 'react-router-dom';
 
 const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
+  const [message, setMessage] = useState();
+  const navigate = useNavigate();
   const [authTokens, setAuthTokens] = useState(() => 
     localStorage.getItem('authTokens') ? JSON.parse(localStorage.getItem('authTokens')) : null
   );
@@ -16,9 +19,9 @@ export const AuthProvider = ({ children }) => {
   });
   const [loading, setLoading] = useState(true);
 
-  const loginUser = async (username, password) => {
-    const formData = {username, password}
-    const res = await fetch('http://localhost:4000/api/auth/login', {
+  const loginUser = async (email, password) => {
+    const formData = {email, password}
+    const res = await fetch('http://localhost:4000/api/v1/auth/login', {
       method: 'POST',
       body: JSON.stringify(formData),
       headers: {
@@ -27,18 +30,24 @@ export const AuthProvider = ({ children }) => {
     });
 
     if (!res.ok) {
-      const {error} = await res.json()
-      throw Error(error);
+      const data = await res.json();
+      console.log(data, data.message);
+      setMessage(data.message);
+
+      return;
     }
 
-    const data = await res.json()
+    const data = await res.json();
+    console.log(data);
     setAuthTokens(data);
     setUser(jwtDecode(data.accessToken));
+    console.log(jwtDecode(data.accessToken));
     localStorage.setItem('authTokens', JSON.stringify(data));
   };
 
   const registerUser = async (formData) => { 
-    const response = await fetch('http://localhost:4000/api/auth/register', {
+    console.log('register user')
+    const res = await fetch('http://localhost:4000/api/v1/auth/register', {
       method: 'POST',
       body: JSON.stringify(formData),
       headers: {
@@ -46,14 +55,22 @@ export const AuthProvider = ({ children }) => {
       }
     });
     // You might want to redirect or handle success here
-    if (!response.ok) {
-      const {error} = await response.json()
-      throw Error(error);
+    if (!res.ok) {
+      const data = await res.json();
+      console.log(data, data.message);
+      setMessage(data.message);
+
+      return
     }
+
+    const data = await res.json();
+    console.log(data, data.message);
+    setMessage(data.message);
+    navigate('/login');
   };
 
   const logoutUser = async () => {
-    const res = await fetch('/ap/v1/auth/logout', {
+    const res = await fetch('http://localhost:4000/api/v1/auth/logout', {
       method: 'POST',
     })
 
@@ -92,6 +109,7 @@ export const AuthProvider = ({ children }) => {
   let contextData = {
     user,
     authTokens,
+    message,
     loginUser,
     registerUser,
     logoutUser

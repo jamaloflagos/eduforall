@@ -11,7 +11,7 @@ const router = express.Router();
 router.use(verifyJWT);
 
 router.route('/')
-    .get(verifyRoles(ROLES_LIST.Tutor, ROLES_LIST.Student),getAllGrades)
+    .get(getAllGrades)
 
 router.route('/:id')
     .get(getGradeById)

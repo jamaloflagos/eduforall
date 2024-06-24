@@ -10,7 +10,7 @@ const StudentProgressCard = ({ studentId }) => {
   const [studentData, setStudentData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const { authTokens } = useAuth();
+  // const { authTokens } = useAuth();
 
   useEffect(() => {
     const fetchProgress = async () => {
@@ -19,13 +19,15 @@ const StudentProgressCard = ({ studentId }) => {
           fetch(`http://localhost:4000/api/students/${studentId}`, {
             headers: {
               'Content-Type': 'application/json',
-              'Authorization': `Bearer ${authTokens.accessToken}`
+              'Role': 'tutor'
+              // 'Authorization': `Bearer ${authTokens.accessToken}`
             }
           }),
           fetch(`http://localhost:4000/api/submissions?studentId=${studentId}`, {
             headers: {
               'Content-Type': 'application/json',
-              'Authorization': `Bearer ${authTokens.accessToken}`
+              'Role': 'tutor'
+              // 'Authorization': `Bearer ${authTokens.accessToken}`
             }
           }),
         ]);
@@ -45,7 +47,8 @@ const StudentProgressCard = ({ studentId }) => {
         const totalLessons =  await fetch (`http://localhost:4000/api/v1/lessons/`, {
           headers: {
             'Content-Type': 'application/json',
-            'Authorization': `Bearer ${authTokens.accessToken}`
+            'Role': 'tutor'
+            // 'Authorization': `Bearer ${authTokens.accessToken}`
           }
         });
         let totalAssignments = 0;
@@ -83,8 +86,8 @@ const StudentProgressCard = ({ studentId }) => {
         setLoading(false); // Set loading to false, whether success or failure
       }
     };
-  fetchProgress();
-  }, [studentId, authTokens.accessToken]);
+  // fetchProgress();
+  }, [studentId]);
   
   if (loading) {
     return <div>Loading...</div>;

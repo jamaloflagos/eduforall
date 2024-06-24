@@ -1,15 +1,15 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import { useAuth } from '../hooks/useAuth';
+// import { useAuth } from '../hooks/useAuth';
 
 const CreateResourceModal = ({ resourceType, onClose, onSubmit, lesson_id }) => {
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState(''); // For lessons and quizzes
-  const [week, setWeek] = useState(''); // For lessons
+  // const [week, setWeek] = useState(''); // For lessons
   const [due_date, setDue_date] = useState(''); // For assignments
   const [objectives, setObjectives] = useState(['']); // Start with one empty objective
   const [selectedFiles, setSelectedFiles] = useState([]);
-  const { authTokens } = useAuth();
+  // const { authTokens } = useAuth();
   const [questions, setQuestions] = useState([
     { question: '', options: ['', '', '', ''], answer: null }, // Initial question
   ]);
@@ -47,8 +47,6 @@ const CreateResourceModal = ({ resourceType, onClose, onSubmit, lesson_id }) => 
       if (i === index) {
           if (field === 'options') {
               // Use spread operator to create a new array and add the new option
-              console.log(index, field, value);
-              console.log(questions);
               const newOptions = [...q.options];
                 if (optIndex !== undefined) { // Updating an existing option
                     newOptions[optIndex] = value;
@@ -58,11 +56,10 @@ const CreateResourceModal = ({ resourceType, onClose, onSubmit, lesson_id }) => 
                 return { ...q, options: newOptions }
               // return { ...q, options: [...q.options, value] };
           }
-          console.log(index, field, value);
-          console.log(questions);
+          
           return { ...q, [field]: value }; 
           }
-          console.log(questions);
+        
       return q;
   }));
   };
@@ -76,29 +73,33 @@ const CreateResourceModal = ({ resourceType, onClose, onSubmit, lesson_id }) => 
 
     const formData = {
       title,
-      week,
-      objectives: objectives.filter(obj => obj.trim() !== ''),
       due_date,
       description,
-      questions,
       lesson_id // For quizzes and assignments
     };
 
-    selectedFiles.forEach(file => {
-        formData.append('lesson_content', file); // 'files' matches your backend field name
-      });
-
+    if (resourceType === 'lessons') {
+      formData.lesson_content = selectedFiles
+      formData.objectives = objectives.filter(obj => obj.trim() !== '')
+    }
+    
+    if (resourceType === 'quizzes') {
+      formData.questions = questions
+    }
     // Filter out null or empty values
     const filteredData = Object.fromEntries(
       Object.entries(formData).filter(([_, v]) => v !== null && v !== '')
     );
-
+    console.log(formData); 
+    console.log(filteredData); 
+    console.log(selectedFiles);
     try {
-      const response = await fetch(`http://localhost:4000/api/${resourceType}`, {
+      const response = await fetch(`http://localhost:4000/v1/api/${resourceType}`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${authTokens.accessToken}`
+          'Role': 'tutor'
+          // 'Authorization': `Bearer ${authTokens.accessToken}`
         },
         body: JSON.stringify(filteredData),
       });
@@ -125,8 +126,8 @@ const CreateResourceModal = ({ resourceType, onClose, onSubmit, lesson_id }) => 
         
         {resourceType === 'lessons' && (
           <div>
-            <input type="text" value={title} onChange={(e) => setTitle(e.target.value)} />
-            <input type="text" value={week} onChange={(e) => setWeek(e.target.value)} />
+            <input type="text" value={title} onChange={(e) => setTitle(e.target.value)} placeholder='Title'/>
+            {/* <input type="text" value={week} onChange={(e) => setWeek(e.target.value)} placeholder='Week'/> */}
             <h4>Objectives:</h4>
             {objectives.map((objective, index) => (
               <div key={index}>

@@ -1,46 +1,47 @@
 import React, { useEffect, useState } from 'react';
 import StudentProgressCard from './StudentProgressCard';
-import { useAuth } from '../hooks/useAuth';
+// import { useAuth } from '../hooks/useAuth';
 
 const StudentProgressOverview = () => {
   const [students, setStudents] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
-  const { authTokens } = useAuth();
+  const [message, setMessage] = useState(null);
+  // const { authTokens } = useAuth();
 
   useEffect(() => {
     const fetchStudents = async () => {
       try {
-        const response = await fetch('http://localhost:4000/api/students', {
+        const res = await fetch('http://localhost:4000/api/v1/students', {
           headers: {
             'Content-Type': 'application/json',
-            'Authorization': `Bearer ${authTokens.accessToken}`
+            'Role': 'tutor'
+            // 'Authorization': `Bearer ${authTokens.accessToken}`
           }
         });
 
-        if (!response.ok) {
-          throw new Error('Network response was not ok.');
+        if (!res.ok) {
+          const data = await res.json();
+          setMessage(data.message)
         }
 
-        const data = await response.json();
-        setStudents(data);
-      } catch (error) {
-        setError(error.message);
-        console.error('Error fetching students:', error);
+        const data = await res.json();
+        setStudents(data.students);
+      } catch (err) {
+        setMessage(err.message);
       } finally {
         setLoading(false);
       }
     };
 
-    fetchStudents();
+    // fetchStudents();
   }, []); 
 
   if (loading) {
     return <div>Loading...</div>; // Or a more elaborate loading indicator
   }
 
-  if (error) {
-    return <div>Error: {error}</div>; 
+  if (message) {
+    return <div>message: {message}</div>; 
   }
 
   return (

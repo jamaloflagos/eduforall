@@ -111,7 +111,6 @@ const RegisterPage = () => {
           name="location"
           value={formData.location} 
           onChange={handleChange} 
-          required 
         />
       </div>
       <div>

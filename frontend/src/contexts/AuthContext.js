@@ -21,7 +21,7 @@ export const AuthProvider = ({ children }) => {
 
   const loginUser = async (email, password) => {
     const formData = {email, password}
-    const res = await fetch('https://eduforall-backend.vercel.app/api/v1/auth/login', {
+    const res = await fetch('http://localhost:4000/api/v1/auth/login', {
       method: 'POST',
       body: JSON.stringify(formData),
       headers: {
@@ -47,7 +47,7 @@ export const AuthProvider = ({ children }) => {
 
   const registerUser = async (formData) => { 
     console.log('register user')
-    const res = await fetch('https://eduforall-backend.vercel.app/api/v1/auth/register', {
+    const res = await fetch('http://localhost:4000/api/v1/auth/register', {
       method: 'POST',
       body: JSON.stringify(formData),
       headers: {
@@ -70,7 +70,7 @@ export const AuthProvider = ({ children }) => {
   };
 
   const logoutUser = async () => {
-    const res = await fetch('https://eduforall-backend.vercel.app/api/v1/auth/logout', {
+    const res = await fetch('http://localhost:4000/api/v1/auth/logout', {
       method: 'POST',
     })
 
@@ -84,7 +84,7 @@ export const AuthProvider = ({ children }) => {
   // const updateToken = async () => {
   //   // Logic to refresh the access token using the refresh token
   //   // ...
-  //   const res = await fetch('https://eduforall-backend.vercel.app/api/v1/auth/refresh', {
+  //   const res = await fetch('http://localhost:4000/api/v1/auth/refresh', {
   //     method: 'POST',
   //     credentials: 'include'
   //   })

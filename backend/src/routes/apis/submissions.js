@@ -9,7 +9,7 @@ const {
 const router = express.Router();
 router.use(verifyJWT);
 
-router.route('/')
+router.route('/:assignment_id/assignment')
     .get(getAllSubmissions);
 
 router.route('/:id')

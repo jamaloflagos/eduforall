@@ -10,7 +10,7 @@ const s3Client = new S3Client({ region: process.env.AWS_REGION });
  * @route GET /api/submissions
 */
 const getAllSubmissions = asyncHandler(async (req, res) => {
-    const { assignment_id } = req.body
+    const { assignment_id } = req.params
     const query = `SELECT u.firstname, u.lastname, s.* 
                     FROM submissions s
                     JOIN users u ON s.student_id = u.id
@@ -23,7 +23,7 @@ const getAllSubmissions = asyncHandler(async (req, res) => {
     }
 
     if (submissions.rows.length === 0) {
-        return res.status(400).json({message: 'No submission for this assignment yet'});
+        return res.sendStatus(204);
     }
 
     res.status(200).json({submissions: submissions.rows});
@@ -35,7 +35,6 @@ const getAllSubmissions = asyncHandler(async (req, res) => {
 */
 const getSubmissionById = asyncHandler(async (req, res) => {
     const { id } = req.params
-    const { student_id }  = req.body
     const submission = await pool.query('SELECT code_location FROM submissions WHERE id = $1 AND student_id = $2', [id, student_id]);
     console.log(student_id, submission)
     if (!submission) {

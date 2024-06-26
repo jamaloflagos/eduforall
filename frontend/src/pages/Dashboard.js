@@ -14,10 +14,9 @@ function Dashboard() {
     const { lessons, dispatch } = useLesson();
 
     useEffect(() => {
-      console.log('dashboard');
         const fetchLessons = async () => {
           try {
-            const res = await fetch('https://eduforall-backend.vercel.app/api/v1/lessons', {
+            const res = await fetch('http://localhost:4000/api/v1/lessons', {
               headers: {
                 'Content-Type': 'application/json',
                 'Authorization': `Bearer ${authTokens.accessToken}`
@@ -29,7 +28,7 @@ function Dashboard() {
               dispatch({type: "FETCH_LESSONS", payload: data.lessons});
               if(data.lessons.length > 0) { // Check if there are data.lessons
                 setCurrentLesson(data.lessons[0]); // Default to the first lesson
-                navigate(`/dashboard/${data.lessons[0].id}`); // Navigate to the first lesson
+                navigate(`/dashboard/week-${data.lessons[0].id}`); // Navigate to the first lesson
               }
               return
             }
@@ -58,10 +57,9 @@ function Dashboard() {
     const handleLessonSelect = (lessonId) => {
         // Update the current lesson and navigate to its route
         setCurrentLesson(lessons.find(lesson => lesson.id === lessonId));
-        navigate(`/dashboard/${lessonId}`);
+        navigate(`/dashboard/week-${lessonId}`);
     };
 
-    console.log(message)
 
     return (
         <div className="dashboard">
@@ -69,20 +67,17 @@ function Dashboard() {
             <div className="main-content">
                 <Sidebar lessons={lessons} onLessonSelect={handleLessonSelect} />
                 <div className="lesson-area">
-                    {message && <h1>{message}</h1>}
+                    {message === 'Failed to fetch' ? <p>Oops! We're having trouble connecting to the server. Please try again later.</p> : <h1>{message}</h1>}
                     <Routes>
                         {lessons && lessons.map(lesson => (
                             <Route
                                 key={lesson.id}
-                                path={`/dashboard/${lesson.id}`}
+                                path={`/dashboard/week-${lesson.id}`}
                                 element={<LessonDetails currentLesson={currentLesson}/>}
                             />
                         ))}
                     </Routes>
                 </div>
-                {lessons && lessons.map(lesson => (
-                  <h1>{lesson.title}</h1>
-                ))}
             </div>
         </div>
     );

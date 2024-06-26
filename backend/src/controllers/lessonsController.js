@@ -8,8 +8,6 @@ const s3Client = new S3Client({ region: process.env.AWS_REGION });
  * @route POST /api/lessons
 */
 const createLesson = asyncHandler(async (req, res) => {
-    console.log('cretae lesson');
-    console.log(req.body)
     if (!req.file) {
         return res.status(400).send('No files uploaded.');
     }
@@ -36,7 +34,6 @@ const createLesson = asyncHandler(async (req, res) => {
  * @route GET /api/lessons
 */
 const getAllLessons = asyncHandler(async (req, res) => {
-    console.log('get lessons recieved')
     const allLessons = await pool.query('SELECT title, id, week FROM lessons')
 
     if (allLessons.rows.length === 0) {
@@ -53,7 +50,6 @@ const getAllLessons = asyncHandler(async (req, res) => {
 const getLessonById = asyncHandler(async (req, res) => {
     const { id } = req.params
     const result = await pool.query('SELECT content_location FROM lessons WHERE id = $1', [id]);
-    console.log(`id: ${id}`,result);
 
     if (result.rows.length === 0) {
         return res.status(404).json({message: 'Lesson not found'});
@@ -77,9 +73,7 @@ const getLessonById = asyncHandler(async (req, res) => {
  * @route GET /api/lessons/:id/objectives
 */
 const getLessonObjectivesById = asyncHandler(async (req, res) => {
-    console.log('get lesson objectives')
     const { id } = req.params
-    console.log(id)
     const objectives = await pool.query('SELECT description FROM objectives WHERE lesson_id = $1', [id]);
     console.log('objectives: ', objectives.rows[0].description);
     if (!objectives) {

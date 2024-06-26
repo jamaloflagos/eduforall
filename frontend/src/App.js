@@ -9,7 +9,6 @@ function App() {
   const { user } = useAuth();
   return (
     <div className="app">
-        <h1>JavaScript</h1>
         <Routes>
           <Route path='*' element={user ? <Dashboard /> : <Navigate to='/login' />}/>
           <Route path='/register' element={!user ? <RegisterPage /> : <Navigate to='/' />}/>

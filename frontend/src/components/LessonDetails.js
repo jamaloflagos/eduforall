@@ -9,7 +9,7 @@ const LessonDetails = ({ currentLesson }) => {
   console.log('lesson details')
   
   const { authTokens, user } = useAuth();
-  const { id } = currentLesson;
+  const { id, title } = currentLesson;
   console.log(id, currentLesson, "in lesson detail")
   const [lessonContent, setLessonContent] = useState();
   const [message, setMessage] = useState();
@@ -17,7 +17,7 @@ const LessonDetails = ({ currentLesson }) => {
   useEffect(()=> {
     const fetchLessonDetail = async () => {
       try {
-        const res = await fetch (`https://eduforall-backend.vercel.app/api/v1/lessons/${id}`, {
+        const res = await fetch (`http://localhost:4000/api/v1/lessons/${id}`, {
           headers: {
             'Content-Type': 'application/json',
             'Authorization': `Bearer ${authTokens.accessToken}`
@@ -53,6 +53,7 @@ const LessonDetails = ({ currentLesson }) => {
   
   return (
       <div>
+        {title && <h1>{title}</h1>}
         <ObjectivesCard lesson_id={id}/>
         {message ? <h1>{message}</h1> : <LessonContent content={lessonContent} />}
         {/* {!quizCompleted ? (

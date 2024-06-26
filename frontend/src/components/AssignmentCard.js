@@ -14,16 +14,22 @@ const AssignmentCard = ({ lesson_id }) => {
   const fetchAssignment = async () => {
     console.log(lesson_id);
     try {
-      const res = await fetch(`https://eduforall-backend.vercel.app/api/v1/assignments/${lesson_id}`, {
+      const res = await fetch(`http://localhost:4000/api/v1/assignments/${lesson_id}`, {
         headers: {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${authTokens.accessToken}`
         }
       });
 
+      if (res.status === 204) {
+        setMessage('No assignment for this lesson');
+        return
+      }
+
       if (res.ok) {
         const data = await res.json();
         setAssignment(data.assignment);
+        setMessage(null)
         return
       }
 
@@ -37,7 +43,7 @@ const AssignmentCard = ({ lesson_id }) => {
   if (user) {
     fetchAssignment();
   }
- }, [lesson_id])
+ }, [lesson_id]);
 
   // Determine status (e.g., "Not submitted", "Submitted", "Overdue") based on assignment and student data
   // const assignmentStatus = getAssignmentStatus(assignment);
@@ -46,17 +52,13 @@ const AssignmentCard = ({ lesson_id }) => {
     <div>
       <h4>Assignment</h4>
       {
-      message ? <h1>{message}</h1> : 
+      message === 'No assignment for this lesson' ? <p>{message}</p> : 
       ( 
         <div className="assignment-card-content">
           {assignment && <h3 className="assignment-card-title">{assignment.description}</h3>}
           {assignment && <p className="assignment-card-due-date">
             Due: {new Date(assignment.due_date).toLocaleDateString()}
           </p>}
-          {/* <p className="assignment-card-status"> */}
-            {/* Status: {assignmentStatus} */}
-          {/* </p> */}
-          {/* Optionally display additional assignment details (e.g., description excerpt) */}
           {assignment && <AssignmentSubmissionForm assignment_id={assignment.id}/>}
           {/* <GradeFeedback /> */}
         </div> 
@@ -74,17 +76,5 @@ AssignmentCard.propTypes = {
     // ... other assignment-related properties (e.g., description)
   }).isRequired,
 };
-
-// Helper function to determine assignment status (implementation depends on your data model)
-// function getAssignmentStatus(assignment) {
-//   const now = new Date();
-//   if (assignment.submissions && assignment.submissions.length > 0) {
-//     return 'Submitted';
-//   } else if (now > new Date(assignment.dueDate)) {
-//     return 'Overdue';
-//   } else {
-//     return 'Not submitted';
-//   }
-// }
 
 export default AssignmentCard;

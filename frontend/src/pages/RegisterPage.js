@@ -68,7 +68,6 @@ const RegisterPage = () => {
           name="firstname"
           value={formData.firstname} 
           onChange={handleChange} 
-          required 
         />
       </div>
       <div>
@@ -79,7 +78,6 @@ const RegisterPage = () => {
           name="lastname"
           value={formData.lastname} 
           onChange={handleChange} 
-          required 
         />
       </div>
       <div>
@@ -95,7 +93,7 @@ const RegisterPage = () => {
       <div>
         <label htmlFor="email">Email:</label>
         <input 
-          type="email" 
+          type="text" 
           id="email" 
           name="email"
           value={formData.email} 

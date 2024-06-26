@@ -13,16 +13,16 @@ const RecentSubmissionsList = () => {
       setIsLoading(true);
 
       try {
-        const res = await fetch('https://eduforall-backend.vercel.app/api/v1/submissions', {
+        const res = await fetch('http://localhost:4000/api/v1/submissions', {
           headers: {
             'Content-Type': 'application/json',
             'Role': 'tutor'
-            // 'Authorization': `Bearer ${authTokens.accessToken}`
           }
         });
         if (!res.ok) {
           const data = await res.json();
           setMessage(data.message);
+          return
         }
         const data = await res.json();
         setSubmissions(data.submissions);
@@ -35,6 +35,7 @@ const RecentSubmissionsList = () => {
 
     fetchSubmissions();
   }, []);
+  console.log(message)
 
   if (isLoading) {
     return <div>Loading...</div>;
@@ -48,7 +49,7 @@ const RecentSubmissionsList = () => {
     <div>
       <h3>Recent Submissions</h3>
       <ul>
-        {submissions.map((submission) => (
+        {submissions && submissions.map((submission) => (
           <SubmissionItem key={submission.id} submission={submission} />
         ))}
       </ul>

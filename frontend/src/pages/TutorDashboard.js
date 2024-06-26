@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import StudentProgressOverview from '../components/StudentProgressOverview';
 import RecentSubmissionsList from '../components/RecentSubmissionsList';
 import CreateResourceModal from '../components/CreateResourceModal'; // Reusable component
+import Assignments from '../components/Assignments';
 
 const TutorDashboard = () => {
   // ... (useState for any shared modal state)
@@ -22,11 +23,11 @@ const TutorDashboard = () => {
     setLesson_id(newResource.lesson_id);
     // You might want to update the relevant section of the dashboard with this new resource
   };
-  console.log(lesson_id);
   return (
     <div className="tutor-dashboard">
       {/* <StudentProgressOverview /> */}
       {/* <RecentSubmissionsList /> */}
+      <Assignments />
 
       {/* Buttons to trigger modals */}
       <button onClick={() => setShowModal(true) & setModalType('lessons')}>Create Lesson</button>

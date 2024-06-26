@@ -3,10 +3,9 @@ const pool = require('../db/postgres');
 
 /** 
  * Create a new assignment
- * @route POST /api/assignments
+ * @route POST /api/v1/assignments
 */ 
 const createAssignment = asyncHandler(async (req, res) => {
-    console.log('assignment')
     const { lesson_id, description, due_date } = req.body;
     console.log(lesson_id, description, due_date);
     if (!lesson_id || !description || !due_date) {
@@ -36,7 +35,7 @@ const getAllAssignments = asyncHandler(async (req, res) => {
     }
 
     if (assignments.rows.length === 0) {
-        return res.status(400).send('No assignments');
+        return res.sendStatus(204);
     }
 
     res.status(200).json({assignments: assignments.rows});
@@ -47,7 +46,6 @@ const getAllAssignments = asyncHandler(async (req, res) => {
  * @route GET /api/assignments/:id
 */ 
 const getAssignmentById = asyncHandler(async (req, res) => {
-    console.log('get assignment recieved')
     const { id } = req.params 
     const assignment = await pool.query('SELECT * FROM assignments WHERE lesson_id = $1', [id]);
     if (!assignment) {
@@ -55,11 +53,9 @@ const getAssignmentById = asyncHandler(async (req, res) => {
     }
 
     if (assignment.rows.length === 0) {
-        console.log('no assignment')
-        return res.status(404).json({message: 'No assignment for this lesson'});
+       
+        return res.sendStatus(204)
     }
-
-    console.log(assignment.rows)
 
     res.status(200).json({assignment: assignment.rows[0]});
 });

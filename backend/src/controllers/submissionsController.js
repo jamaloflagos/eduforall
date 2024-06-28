@@ -34,9 +34,9 @@ const getAllSubmissions = asyncHandler(async (req, res) => {
  * @route GET /api/submissions/:id
 */
 const getSubmissionById = asyncHandler(async (req, res) => {
-    const { id } = req.params
-    const submission = await pool.query('SELECT code_location FROM submissions WHERE id = $1 AND student_id = $2', [id, student_id]);
-    console.log(student_id, submission)
+    const { submission_id, student_id } = req.params
+    const submission = await pool.query('SELECT code_location FROM submissions WHERE id = $1 AND student_id = $2', [submission_id, student_id]);
+    
     if (!submission) {
         return res.status(500).json({message: `Can't fetch the file for this submission`})
     }
@@ -50,7 +50,7 @@ const getSubmissionById = asyncHandler(async (req, res) => {
     const { Body, ContentType } = await s3Client.send(command);
 
     res.setHeader('Content-Type', ContentType);
-    Body.pipe(res);
+    Body.pipe();
 });
 
 /** 

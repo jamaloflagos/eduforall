@@ -11,7 +11,6 @@ const RegisterPage = () => {
     middlename: '', // Optional
     location: '', // Optional
   });
-  const navigate = useNavigate()
   const [error, setError] = useState('');
   const [imageMessage, setImageMessage] = useState('');
   const [selectedFile, setSelectedFile] = useState(null);
@@ -41,10 +40,7 @@ const RegisterPage = () => {
   const handleSubmit = async (e) => {
     console.log('handle submit')
     e.preventDefault();
-    // if (!selectedFile.type.startsWith('image/')) {
-    //     setImageMessage("Please select an image.");
-    //     return;
-    // }
+    
 
     // formData.append('profile_picture', selectedFile);
     formData.profile_picture = selectedFile;
@@ -56,7 +52,7 @@ const RegisterPage = () => {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
+    <form onSubmit={handleSubmit} encType="multipart/form-data">
       <h2>Register</h2>
       {error && <div className="error">{error}</div>}
       {message && <div className="message">{message}</div>}

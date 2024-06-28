@@ -12,7 +12,7 @@ router.use(verifyJWT);
 router.route('/:assignment_id/assignment')
     .get(getAllSubmissions);
 
-router.route('/:id')
+router.route('/:submission_id/student/:student_id')
     .get(getSubmissionById);
 
 router.route('/:id/grade')

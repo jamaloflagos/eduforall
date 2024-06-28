@@ -18,6 +18,8 @@ const upload = multer({
       let folder = '';
       if (file.mimetype.startsWith('text/html')) {
         folder = 'html/';
+      } else if (file.mimetype.startsWith('image/')) {
+        folder - 'profile-pictures/'
       } else {
         folder = 'submissions/';
       }

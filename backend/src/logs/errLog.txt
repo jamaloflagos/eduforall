@@ -688,3 +688,6 @@
 2024-06-26	14:45:39	1b749bfe-d77c-49b7-b645-27e800a137d8	ReferenceError: student_id is not defined	GET	/api/v1/submissions/$	[object Object]
 2024-06-26	14:45:55	be1a9677-9cdd-4b60-9c21-625f09c4921f	ReferenceError: student_id is not defined	GET	/api/v1/submissions/1	[object Object]
 2024-06-26	14:45:55	0a3fd841-8753-4ad6-af58-a74831fa9416	ReferenceError: student_id is not defined	GET	/api/v1/submissions/2	[object Object]
+2024-06-26	15:40:27	a76b25a1-c677-4abf-b811-1bf18459d400	TypeError: The "paths[0]" argument must be of type string. Received undefined	GET	/api/v1/submissions/2/student/3	[object Object]
+2024-06-26	15:40:28	88757ba7-16f7-40de-9570-388e8d01038c	TypeError: The "paths[0]" argument must be of type string. Received undefined	GET	/api/v1/submissions/2/student/3	[object Object]
+2024-06-26	15:41:01	a31a10cf-8b48-4e43-9265-c7f51c15f93d	TypeError: Cannot read properties of undefined (reading 'on')	GET	/api/v1/submissions/1/student/3	[object Object]

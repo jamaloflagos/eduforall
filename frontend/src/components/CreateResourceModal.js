@@ -91,12 +91,6 @@ const CreateResourceModal = ({ resourceType, onClose, onSubmit, lesson_id}) => {
       formData.append('title', title);
       formData.append('lesson_content', selectedFile);
       formData.append('objectives', JSON.stringify(objectives));
-      console.log(formData.get('title'))
-    //   objectives.forEach(obj => {
-    //     if (obj.trim() !== '') {
-    //       formData.append('objectives[]', obj);
-    //     }
-    //  });
     }
     
     if (resourceType === 'quizzes') {

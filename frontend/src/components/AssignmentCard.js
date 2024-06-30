@@ -57,7 +57,7 @@ const AssignmentCard = ({ lesson_id }) => {
         <div className="assignment-card-content">
           {assignment && <h3 className="assignment-card-title">{assignment.description}</h3>}
           {assignment && <p className="assignment-card-due-date">
-            Due: {new Date(assignment.due_date).toLocaleDateString()}
+            Due date: {new Date(assignment.due_date).toLocaleDateString()}
           </p>}
           {assignment && <AssignmentSubmissionForm assignment_id={assignment.id}/>}
           {/* <GradeFeedback /> */}

@@ -10,7 +10,7 @@ const SubmissionItem = ({ submission }) => {
 
   const handleGradeSubmit = async (grade, feedback) => {
     try {
-      const response = await fetch(`https://eduforall.vercel.app/api/submissions/${submission.id}/grade`, {
+      const response = await fetch(`https://eduforall-backend.vercel.app//api/submissions/${submission.id}/grade`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

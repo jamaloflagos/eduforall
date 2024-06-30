@@ -14,7 +14,7 @@ const AssignmentCard = ({ lesson_id }) => {
   const fetchAssignment = async () => {
     console.log(lesson_id);
     try {
-      const res = await fetch(`https://eduforall.vercel.app/api/v1/assignments/${lesson_id}`, {
+      const res = await fetch(`https://eduforall-backend.vercel.app//api/v1/assignments/${lesson_id}`, {
         headers: {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${authTokens.accessToken}`

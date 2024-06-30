@@ -17,7 +17,7 @@ const LessonDetails = ({ currentLesson }) => {
   useEffect(()=> {
     const fetchLessonDetail = async () => {
       try {
-        const res = await fetch (`https://eduforall.vercel.app/api/v1/lessons/${id}`, {
+        const res = await fetch (`https://eduforall-backend.vercel.app//api/v1/lessons/${id}`, {
           headers: {
             'Content-Type': 'application/json',
             'Authorization': `Bearer ${authTokens.accessToken}`

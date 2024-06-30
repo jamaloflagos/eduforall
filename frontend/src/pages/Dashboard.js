@@ -17,7 +17,7 @@ function Dashboard() {
   useEffect(() => {
         const fetchLessons = async () => {
           try {
-            const res = await fetch('https://eduforall-backend.vercel.app//api/v1/lessons', {
+            const res = await fetch('https://eduforall-backend.vercel.app/api/v1/lessons', {
               headers: {
                 'Content-Type': 'application/json',
                 'Authorization': `Bearer ${authTokens.accessToken}`

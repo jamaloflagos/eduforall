@@ -9,7 +9,7 @@ const Assignments = () => {
     useEffect(() => {
       const fetchAssignments = async () => {
         try {
-            const res = await fetch('http://localhost:4000/api/v1/assignments', {
+            const res = await fetch('https://eduforall.vercel.app/api/v1/assignments', {
                 headers: {
                   'Content-Type': 'application/json',
                   'Role': 'tutor'

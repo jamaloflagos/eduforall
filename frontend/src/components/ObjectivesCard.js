@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { useAuth } from "../hooks/useAuth";
+import '../styles/Objectives.css'
 
 const ObjectivesCard = ({lesson_id}) => {
     const { authTokens, user } = useAuth();
@@ -8,7 +9,7 @@ const ObjectivesCard = ({lesson_id}) => {
     useEffect(() => {
         const fetchObjectives = async () => {
           try {
-            const res = await fetch(`http://localhost:4000/api/v1/lessons/${lesson_id}/objectives`, {
+            const res = await fetch(`https://eduforall.vercel.app/api/v1/lessons/${lesson_id}/objectives`, {
               headers: {
                 'Content-Type': 'application/json',
                 'Authorization': `Bearer ${authTokens.accessToken}`
@@ -35,13 +36,13 @@ const ObjectivesCard = ({lesson_id}) => {
        }, [lesson_id]);
 
   return (
-    <div>
-        <h1>Objectives</h1>
+    <div className="objectives">
+        <h3>Objectives</h3>
         {message && <h1>{message}</h1>}
         <ul>
             {objectives && objectives.map(objective => (
                 <li>
-                    <h1>{objective}</h1>
+                    <h6>{objective}</h6>
                 </li>
             ))}
         </ul>

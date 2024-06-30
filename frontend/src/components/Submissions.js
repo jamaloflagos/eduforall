@@ -11,7 +11,7 @@ const Submissions = ({assignment}) => {
           console.log('get submissions called') 
           
           try {
-            const res = await fetch(`http://localhost:4000/api/v1/submissions/${assignment.id}/assignment`, {
+            const res = await fetch(`https://eduforall.vercel.app/api/v1/submissions/${assignment.id}/assignment`, {
                 headers: {
                   'Content-Type': 'application/json',
                   'Role': 'tutor'
@@ -43,7 +43,7 @@ const Submissions = ({assignment}) => {
 
     const getSubmissionById = async (submission_id, student_id) => {
         try {
-            const res = await fetch(`http://localhost:4000/api/v1/submissions/${submission_id}/student/${student_id}`, {
+            const res = await fetch(`https://eduforall.vercel.app/api/v1/submissions/${submission_id}/student/${student_id}`, {
                 headers: {
                   'Content-Type': 'application/json',
                   'Role': 'tutor'

@@ -32,7 +32,7 @@ const AssignmentSubmissionForm = ({ assignment_id }) => {
       formData.append('assignment_answer', selectedFile);
       
       try {
-          const res = await fetch(`http://localhost:4000/api/v1/assignments/${assignment_id}/submit`, { 
+          const res = await fetch(`https://eduforall.vercel.app/api/v1/assignments/${assignment_id}/submit`, { 
               method: 'POST',
               body: formData,
               headers: {
@@ -56,7 +56,7 @@ const AssignmentSubmissionForm = ({ assignment_id }) => {
     const fetchSubmissionStatus = async () => {
       console.log(assignment_id);
       try {
-        const res = await fetch(`http://localhost:4000/api/v1/assignments/${assignment_id}/submission-status`,{ 
+        const res = await fetch(`https://eduforall.vercel.app/api/v1/assignments/${assignment_id}/submission-status`,{ 
           headers: {
             'Authorization': `Bearer ${authTokens.accessToken}`
           }

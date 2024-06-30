@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useAuth } from '../hooks/useAuth';
+import '../styles/Quiz.css'
 
 function Quiz({lesson_id}) {
   const { user, authTokens } = useAuth();
@@ -12,7 +13,7 @@ function Quiz({lesson_id}) {
   useEffect(() => {
     const fetchQuiz = async () => {
       try {
-        const res = await fetch(`http://localhost:4000/api/v1/quizzes/${lesson_id}`, {
+        const res = await fetch(`https://eduforall.vercel.app/api/v1/quizzes/${lesson_id}`, {
           headers: {
             'Content-Type': 'application/json',
             'Authorization': `Bearer ${authTokens.accessToken}`
@@ -71,15 +72,15 @@ function Quiz({lesson_id}) {
   };
 
   return (
-    <div>
-      <h2>Quiz Time!</h2>
+    <div className='quiz'>
+      <h3>Quiz Time!</h3>
       { quizData.length > 0 ? (
       quizData.map((question, index) => (
-        <div key={index}>
+        <div key={index} className='question'>
           <h3>{question.question}</h3>
           <div>
             {question.options && question.options.map((option, i) => (
-              <div key={i}>
+              <div key={i} className='answer'>
                 <label>
                   <input 
                     type="radio"
@@ -92,7 +93,7 @@ function Quiz({lesson_id}) {
                   {option}
                 </label>
                 {showResults && selectedAnswers[index] === i && (
-                  <span style={{ color: i === question.answer ? 'green' : 'red' }}>
+                  <span style={{ color: i === question.answer ? 'green' : 'red' }} className='show-result'>
                     {i === question.answer ? ' (Correct!)' : ' (Incorrect)'}
                   </span>
                 )}

@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { useAuth } from '../hooks/useAuth';
-import { useNavigate } from 'react-router-dom';
+// import { useNavigate } from 'react-router-dom';
+import '../styles/Register.css'
+
 const RegisterPage = () => {
   const [formData, setFormData] = useState({
     email: '',
@@ -11,7 +13,6 @@ const RegisterPage = () => {
     middlename: '', // Optional
     location: '', // Optional
   });
-  const [error, setError] = useState('');
   const [imageMessage, setImageMessage] = useState('');
   const [selectedFile, setSelectedFile] = useState(null);
   const { registerUser, message } = useAuth();
@@ -38,24 +39,20 @@ const RegisterPage = () => {
   };
 
   const handleSubmit = async (e) => {
-    console.log('handle submit')
     e.preventDefault();
     
 
-    // formData.append('profile_picture', selectedFile);
     formData.profile_picture = selectedFile;
     try {
       await registerUser(formData);
     } catch (err) {
-      setError(err.message); // More specific error handling on backend
+      console.log(err)
     }
   };
 
   return (
     <form onSubmit={handleSubmit} encType="multipart/form-data">
       <h2>Register</h2>
-      {error && <div className="error">{error}</div>}
-      {message && <div className="message">{message}</div>}
       <div>
         <label htmlFor="firstname">First Name:</label>
         <input 
@@ -84,7 +81,7 @@ const RegisterPage = () => {
           name="middlename"
           value={formData.middlename} 
           onChange={handleChange} 
-        />
+          />
       </div>
       <div>
         <label htmlFor="email">Email:</label>
@@ -94,22 +91,22 @@ const RegisterPage = () => {
           name="email"
           value={formData.email} 
           onChange={handleChange} 
-        />
+          />
       </div>
       <div>
         <label htmlFor="location">Location(Optional):</label>
         <input 
-          type="location" 
+          type="text" 
           id="location" 
           name="location"
           value={formData.location} 
           onChange={handleChange} 
-        />
+          />
       </div>
       <div>
         <label htmlFor="profile_picture">Profile Picture(Optional):</label>
         <input type="file" name="profile_picture" id="profile_picture" onChange={handleFileChange}/>
-        {imageMessage && <p>{imageMessage}</p>}
+        {imageMessage && <h5 className='image-message'>{imageMessage}</h5>}
       </div>
       <div>
         <label htmlFor="password">Password:</label>
@@ -119,10 +116,9 @@ const RegisterPage = () => {
           name="password"
           value={formData.password} 
           onChange={handleChange} 
-          required 
           />
       </div>
-        {message && <div>{message}</div>}
+      {message && <h4 className="message">{message}</h4>}
       <button type="submit">Register</button>
     </form>
   );

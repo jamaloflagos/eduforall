@@ -1,0 +1,41 @@
+/* Objectives Section */
+.objectives {
+    background-color: #FFFFFF; /* White background */
+    padding: 10px;
+    border-radius: 8px;
+    margin-bottom: 20px; /* Space between objectives and other content */
+}
+
+.objectives h3 {
+    color: #1976D2; /* Primary blue for main heading */
+    margin-bottom: 15px;
+}
+
+.objectives ul {
+    padding-left: 30px;
+}
+
+.objectives li {
+    margin-bottom: 10px; /* Spacing between list items */
+}
+
+.objectives li h6 { /* Sub-heading for each objective */
+    color: #212121; /* Dark gray */
+    font-size: 18px; /* Adjust as needed */
+    margin: 0 0 5px 0; /* Reduce bottom margin */
+    font-weight: lighter;
+}
+
+/* Error/Success Message (if applicable) */
+.objectives .message {
+    color: #FBC02D; /* Accent yellow */
+    text-align: center;
+    margin-bottom: 10px;
+}
+
+/* Responsive Styles for Objectives */
+@media (max-width: 768px) {
+    .objectives {
+        padding: 15px;
+    }
+}

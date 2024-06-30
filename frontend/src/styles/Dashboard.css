@@ -1,0 +1,52 @@
+
+  
+  .dashboard {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    min-height: 100vh; /* Ensure the dashboard fills the viewport height */
+    background-color: #F5F5F5; /* Light Gray background for main content */
+  }
+  
+  .main-content {
+    display: flex;
+    column-gap: 20px;
+    width: 90vw;
+    flex: 1; /* Allow main content to take up available space */
+    padding: 20px; /* Add padding around main content */
+  }
+  
+  .lesson-area {
+    background-color: #FFFFFF; /* White background for lesson content */
+    padding: 20px;
+    border-radius: 8px;
+    width: 100vw;
+  }
+  
+
+  /* Message Styles */
+  .message {
+    text-align: center;
+    padding: 10px;
+    margin-bottom: 20px;
+    border-radius: 4px;
+  }
+ 
+  
+  /* Responsive Styles */
+  @media (max-width: 768px) {
+    /* .sidebar {
+      width: 200px;
+    } */
+  
+    .main-content {
+      padding: 10px; /* Reduce padding on smaller screens */
+    }
+  
+    .lesson-area {
+      padding: 15px; /* Reduce padding on smaller screens */
+    }
+
+  }
+  
+  

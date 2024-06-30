@@ -7,7 +7,7 @@ const LessonContent = ({ content }) => {
   // (e.g., plain text, HTML, video embed)
   const sanitizedContent = DOMPurify.sanitize(content);
   return (
-    <div dangerouslySetInnerHTML={{ __html: sanitizedContent }} />
+    <div dangerouslySetInnerHTML={{ __html: sanitizedContent }} style={{paddingLeft:'10px', fontSize: '8px', fontWeight: 'lighter', fontFamily: 'sans-serif'}}/>
   );
 };
 

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
-// import './AssignmentCard.css'; 
+import '../styles/Assignment.css'; 
 import AssignmentSubmissionForm from './AssignmentSubmissionForm';
 // import GradeFeedback from './GradeFeedback';
 import { useAuth } from '../hooks/useAuth';
@@ -14,7 +14,7 @@ const AssignmentCard = ({ lesson_id }) => {
   const fetchAssignment = async () => {
     console.log(lesson_id);
     try {
-      const res = await fetch(`http://localhost:4000/api/v1/assignments/${lesson_id}`, {
+      const res = await fetch(`https://eduforall.vercel.app/api/v1/assignments/${lesson_id}`, {
         headers: {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${authTokens.accessToken}`
@@ -49,7 +49,7 @@ const AssignmentCard = ({ lesson_id }) => {
   // const assignmentStatus = getAssignmentStatus(assignment);
 
   return (
-    <div>
+    <div className='assignment'>
       <h4>Assignment</h4>
       {
       message === 'No assignment for this lesson' ? <p>{message}</p> : 

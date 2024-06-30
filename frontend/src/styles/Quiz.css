@@ -1,0 +1,102 @@
+/* Quiz Container */
+.quiz {
+    background-color: #fff; /* White background */
+    padding: 10px;
+    border-radius: 8px;
+    margin-bottom: 20px; 
+}
+
+.quiz > h3 {
+    color: #1976D2; /* Primary blue for title */
+    margin-bottom: 20px;
+    text-align: left;
+}
+
+/* Question Styles */
+.quiz .question h3 {
+    color: #212121; /* Dark gray for question text */
+    margin-bottom: 10px;
+}
+
+.quiz label {
+    display: block;
+    margin-bottom: 5px;
+    cursor: pointer;
+    color: black;
+}
+
+.quiz .question {
+    border: 1px solid #EEEEEE; /* Light gray border */
+    padding: 15px;
+    margin-bottom: 10px;
+    border-radius: 4px;
+  }
+  
+  /* Radio Button Styles */
+  .quiz .question input[type="radio"] {
+    margin-right: 5px;
+    appearance: none;
+    width: 16px;
+    height: 16px;
+    border: 2px solid #9E9E9E; /* Gray border */
+    border-radius: 50%;
+    outline: none;
+    vertical-align: middle; /* Align with text vertically */
+    margin-top: -1px; /* Adjust vertical alignment slightly */
+  }
+  
+  .quiz .question input[type="radio"]:checked {
+    background-color: #9E9E9E;
+  }
+  
+  .quiz .question input[type="radio"]:checked::before {
+    content: '';
+    display: block;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background-color: #fff; 
+    margin: 3px;
+  }
+  
+  /* Answer Feedback Styles */
+  .quiz .question .show-result {
+    margin-left: auto; /* Push to right */
+  }
+
+/* Button Styles */
+.quiz button {
+    background-color: #4CAF50; /* Secondary green for buttons */
+    color: #fff;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-top: 10px; /* Space above the buttons */
+}
+
+.quiz button:hover {
+    background-color: #388E3C; /* Darker green on hover */
+}
+
+.quiz button:disabled {
+    opacity: 0.5;
+    cursor: default;
+}
+
+.quiz .answer {
+    display: flex;
+}
+
+/* Score Display */
+.quiz p {
+    text-align: center;
+    font-weight: bold;
+}
+
+/* Responsive Styles */
+@media (max-width: 768px) {
+    .quiz {
+        padding: 15px; /* Reduce padding on smaller screens */
+    }
+}

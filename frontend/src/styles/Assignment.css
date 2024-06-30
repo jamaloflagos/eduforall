@@ -1,0 +1,46 @@
+/* Assignment Container */
+
+.assignment {
+    background-color: #FFFFFF; /* White background */
+    padding: 10px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+}
+
+.assignment-card-content {
+    background-color: #fff; /* White background */
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+}
+
+.assignment-card-content h3 {
+    color: #212121; /* Primary blue for title */
+    margin-top: 0; 
+    margin-bottom: 10px; 
+}
+
+
+.assignment-card-content .assignment-card-due-date {
+    color: #757575; /* Gray for due date */
+    margin-bottom: 15px; /* Space above the form */
+}
+
+div h4 {
+    color: #1976D2; /* Dark Gray for heading text */
+    font-size: 20px; /* Adjust font size as needed */
+    margin-top: 0;    /* Remove default top margin */
+    margin-bottom: 15px; /* Add spacing below heading */
+  }
+/* Assignment Submission Form Styles */
+/* (You can add styles for your AssignmentSubmissionForm elements here if needed) */
+
+/* Grade Feedback Styles (If applicable) */
+/* (You can add styles for your GradeFeedback component here if needed) */
+
+/* Responsive Styles */
+@media (max-width: 768px) {
+    .assignment-card-content {
+        padding: 15px; /* Reduce padding for smaller screens */
+    }
+}

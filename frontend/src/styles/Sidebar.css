@@ -1,0 +1,90 @@
+ /* Sidebar Styles */
+ .sidebar {
+    width: 100px; /* Set sidebar width */
+    background-color: #FFFFFF;
+    padding: 20px;
+    transition: transform 0.3s ease-in-out;
+    border-right: 1px solid #EEEEEE; /* Subtle border to separate from main content */
+  }
+  
+  .sidebar ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  
+  .sidebar a {
+    text-decoration: none;
+    color: #212121; /* Dark Gray for sidebar links */
+    display: block;
+    padding: 10px 0;
+    transition: background-color 0.3s; /* Smooth transition for hover effect */
+  }
+  
+  .sidebar a:hover {
+    background-color: #EEEEEE; /* Highlight on hover */
+  }
+  
+  .sidebar a.active { /* Style the active link differently */
+    background-color: #4CAF50; /* Secondary Green */
+    color: #FFFFFF;
+  }
+
+  .sidebar.closed { /* Styles when sidebar is closed */
+    transform: translateX(-250px); /* Slide off-screen */
+  }
+
+  .close-button {
+    display: none;
+    position: absolute; /* Position in top right corner */
+    top: 10px;
+    right: 10px;
+    background: none;
+    border: none;
+    font-size: 20px;
+    cursor: pointer;
+    color: #212121; /* Dark gray */
+  }
+
+  /* Hamburger Menu Icon (only visible on small screens) */
+.hamburger-menu {
+    display: none; /* Hidden by default */
+    cursor: pointer;
+    padding: 15px;
+    width: 50px;
+    height: 50px;
+    border: none;
+  }
+  
+  .hamburger-menu span {
+    display: none;
+    width: 25px;
+    height: 3px;
+    background-color: #212121;
+    margin: 6px 0;
+  }
+  
+  /* Responsive Styles */
+  @media (max-width: 768px) {
+    .sidebar {
+      position: fixed; /* Position sidebar fixed to the left */
+      top: 0;
+      left: 0;
+      height: 100%;
+      z-index: 1000; /* Ensure the sidebar is on top of other elements */
+    }
+    
+    .hamburger-menu {
+      display: block; /* Show hamburger menu on small screens */
+    }
+
+    .hamburger-menu span {
+        display: block;
+    }
+
+    .close-button {
+      display: block;
+    }
+
+    
+  }

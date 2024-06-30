@@ -17,7 +17,7 @@ const LessonDetails = ({ currentLesson }) => {
   useEffect(()=> {
     const fetchLessonDetail = async () => {
       try {
-        const res = await fetch (`http://localhost:4000/api/v1/lessons/${id}`, {
+        const res = await fetch (`https://eduforall.vercel.app/api/v1/lessons/${id}`, {
           headers: {
             'Content-Type': 'application/json',
             'Authorization': `Bearer ${authTokens.accessToken}`
@@ -49,11 +49,10 @@ const LessonDetails = ({ currentLesson }) => {
     }
   }, [user, authTokens.accessToken, id])
 
-  console.log(message)
   
   return (
       <div>
-        {title && <h1>{title}</h1>}
+        {title && <h1 style={{paddingLeft: '10px'}}>{title}</h1>}
         <ObjectivesCard lesson_id={id}/>
         {message ? <h1>{message}</h1> : <LessonContent content={lessonContent} />}
         {/* {!quizCompleted ? (

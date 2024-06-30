@@ -68,13 +68,13 @@ const register = asyncHandler(async (req, res) => {
  * @route POST /api/auth/login
 */
 const login = asyncHandler(async (req, res) => {
-    console.log('login recieved');
-    const {email, password} = req.body 
+    const { email, password } = req.body; 
     if (!email || !password) {
-        return res.status(400).json({error: 'Enter all credentials'})
+        return res.status(400).json({error: 'Enter all credentials'});
     }
+
     if(!validator.isEmail(email)) {
-        return res.status(400).json({error: 'Enter a valid email'})
+        return res.status(400).json({error: 'Enter a valid email'});
     } 
 
     const userExists = await pool.query('SELECT email, password, id, role, firstname FROM users WHERE email = $1', [email]);
@@ -98,7 +98,6 @@ const login = asyncHandler(async (req, res) => {
             res.status(200).json({accessToken: token});
         });
     } else {
-        console.log('not found');
         res.status(404).json({message: 'You are not registerd go ahead and register'});
     }
 

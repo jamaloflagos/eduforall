@@ -11,7 +11,7 @@ const StudentProgressOverview = () => {
   useEffect(() => {
     const fetchStudents = async () => {
       try {
-        const res = await fetch('http://localhost:4000/api/v1/students', {
+        const res = await fetch('https://eduforall.vercel.app/api/v1/students', {
           headers: {
             'Content-Type': 'application/json',
             'Role': 'tutor'

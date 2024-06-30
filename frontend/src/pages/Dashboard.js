@@ -5,6 +5,7 @@ import { useAuth } from '../hooks/useAuth';
 import Header from '../components/Header';
 import Sidebar from '../components/Sidebar';
 import { useLesson } from '../hooks/useLesson';
+import '../styles/Dashboard.css'
 
 function Dashboard() {
     const [currentLesson, setCurrentLesson] = useState(null);
@@ -13,10 +14,10 @@ function Dashboard() {
     const navigate = useNavigate();
     const { lessons, dispatch } = useLesson();
 
-    useEffect(() => {
+  useEffect(() => {
         const fetchLessons = async () => {
           try {
-            const res = await fetch('http://localhost:4000/api/v1/lessons', {
+            const res = await fetch('https://eduforall.vercel.app/api/v1/lessons', {
               headers: {
                 'Content-Type': 'application/json',
                 'Authorization': `Bearer ${authTokens.accessToken}`
@@ -65,9 +66,9 @@ function Dashboard() {
         <div className="dashboard">
             <Header />
             <div className="main-content">
-                <Sidebar lessons={lessons} onLessonSelect={handleLessonSelect} />
+                <Sidebar lessons={lessons} onLessonSelect={handleLessonSelect}/>
                 <div className="lesson-area">
-                    {message === 'Failed to fetch' ? <p>Oops! We're having trouble connecting to the server. Please try again later.</p> : <h1>{message}</h1>}
+                    {message === 'Failed to fetch' ? <h4 className='message'>Oops! We're having trouble connecting to the server. Please try again later.</h4> : <h4 className='message'>{message}</h4>}
                     <Routes>
                         {lessons && lessons.map(lesson => (
                             <Route

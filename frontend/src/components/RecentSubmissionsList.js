@@ -13,7 +13,7 @@ const RecentSubmissionsList = () => {
       setIsLoading(true);
 
       try {
-        const res = await fetch('http://localhost:4000/api/v1/submissions', {
+        const res = await fetch('https://eduforall.vercel.app/api/v1/submissions', {
           headers: {
             'Content-Type': 'application/json',
             'Role': 'tutor'

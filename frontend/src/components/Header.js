@@ -1,15 +1,15 @@
-import { useAuth } from "../hooks/useAuth"
+import { useAuth } from "../hooks/useAuth";
+import '../styles/Header.css';
 
 const Header = () => {
     const { user, logoutUser } = useAuth();
 
   return (
     <>
-        <div>
-        <div>Welcome, {user.user_name}</div>
-        <button onClick={logoutUser}>Logout</button>
+        <div className="header">
+          <h4>Welcome, {user.user_name}</h4>
+          <button onClick={logoutUser}>Logout</button>
         </div>
-
     </>
   )
 }

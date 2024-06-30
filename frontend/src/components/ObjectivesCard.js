@@ -38,6 +38,7 @@ const ObjectivesCard = ({lesson_id}) => {
   return (
     <div className="objectives">
         <h3>Objectives</h3>
+        <p>At the end of this lesson you should be able to:</p>
         {message && <h1>{message}</h1>}
         <ul>
             {objectives && objectives.map(objective => (
